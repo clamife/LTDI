@@ -3,6 +3,7 @@ package com.laTiendaDeInma.service;
 import com.laTiendaDeInma.model.Usuario;
 import com.laTiendaDeInma.repository.usuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,9 @@ public class usuarioService {
     @Autowired
     private usuarioRepository usuarioRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // Método para obtener todos los usuarios
     public List<Usuario> obtenerTodosLosUsuarios() {
         return usuarioRepository.findAll();
@@ -23,7 +27,8 @@ public class usuarioService {
 
     // Método para guardar un usuario
     public Usuario guardarUsuario(Usuario usuario) {
-
+        String contrasenaHasheada = passwordEncoder.encode(usuario.getContrasena());
+        usuario.setContrasena(contrasenaHasheada);
         return usuarioRepository.save(usuario);
     }
 
@@ -46,6 +51,9 @@ public class usuarioService {
     public Optional<Usuario> encontrarUsuarioPorId(Long id) {
         return usuarioRepository.findById(id);
     }
+    public Optional<Usuario> encontrarUsuarioPornombre(String nombre) {
+        return usuarioRepository.findByNombre(nombre);
+    }
 
     // Método para modificar un usuario
     public Usuario modificarUsuario(Long id, Usuario usuarioNuevo) {
@@ -57,13 +65,25 @@ public class usuarioService {
         }
     }
     public Usuario buscarPorNombreYContraseña(String nombre, String contraseña) {
-        return usuarioRepository.findByNombreAndContraseña(nombre, contraseña)
-        .orElse(null);
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByNombre(nombre);
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            if (passwordEncoder.matches(contraseña, usuario.getContrasena())) {
+                return usuario;
+            }
+        }
+        return null;  
     }
+
     public boolean validarUsuario(String nombre, String contraseña) {
-        Optional<Usuario> usuarioOpt = usuarioRepository.findByNombreAndContraseña(nombre, contraseña);
-        return usuarioOpt.isPresent();
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByNombre(nombre);
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            return passwordEncoder.matches(contraseña, usuario.getContrasena());
+        }
+        return false; 
     }
+    
 
     // Método para eliminar un usuario por ID
     public boolean eliminarUsuario(Long id) {

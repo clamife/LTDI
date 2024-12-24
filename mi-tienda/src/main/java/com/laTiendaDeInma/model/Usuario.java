@@ -57,11 +57,11 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getContraseña() {
+    public String getContrasena() {
         return contraseña;
     }
 
-    public void setContraseña(String contraseña) {
+    public void setContrasena(String contraseña) {
         this.contraseña = contraseña;
     }
 

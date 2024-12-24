@@ -26,8 +26,6 @@ public interface usuarioRepository extends JpaRepository<Usuario, Long> {
      // Comprobar si un usuario existe por su nombre
      boolean existsByNombre(String nombre);
 
-    // Modificar un usuario (Este es un ejemplo de como se podría hacer, pero JpaRepository ya tiene 'save' que cubre esto)
-    // Si deseas un método que haga más cosas como validar o manejar actualizaciones de alguna manera específica, puedes agregarlo.
     @Override
     <S extends Usuario> S saveAndFlush(S usuario);
 
