@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="index::head">
+</head>
+<body>
+  <nav th:replace="baseAdmin::nav"></nav>
+  <main class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="row mb-4">
+          <div class="col-2">
+            <a href="/gestionProductos" class="btn btn-lg" style="background-color: #7FB77E; color: white; font-size: 1.2rem; width: 100px;">Atrás</a>
+          </div>
+          <div class="col-8 text-center">
+            <h2 class="mb-0" style="color: #5b7668;">Agregar Producto</h2>
+          </div>
+        </div>
+        <div class="card shadow-lg border-0 rounded-3 p-5" style="background-color: #f4f7f6;">
+          <form id="productForm" onsubmit="return validateProductForm(event)" method="post" th:object="${producto}" th:action="@{/nuevo}">
+            <div class="mb-4">
+              <label for="productName" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Nombre del Producto</label>
+              <input type="text" class="form-control" id="productName" th:field="*{nombreProducto}" placeholder="Introduce el nombre del producto">
+              <div id="productNameError" class="invalid-feedback" style="display:none;"></div>
+            </div>
+            <div class="mb-4">
+              <label for="categoria" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Categoría</label>
+              <select class="form-control" id="categoria" th:field="*{categoria}" required>
+                  <option value="" disabled selected>Selecciona una categoría</option>
+                  <option th:each="categoria : ${categorias}" th:value="${categoria.idCategoria}" th:text="${categoria.nombreCategoria}"></option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label for="description" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Descripción</label>
+              <textarea class="form-control" id="description" th:field="*{descripcion}" rows="3" placeholder="Introduce una breve descripción"></textarea>
+              <div id="descriptionError" class="invalid-feedback" style="display:none;"></div>
+            </div>
+            <div class="mb-4">
+              <label for="price" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Precio (€)</label>
+              <input type="number" class="form-control" id="price" th:field="*{precio}" placeholder="Introduce el precio del producto" step="0.01" min="0">
+              <div id="priceError" class="invalid-feedback" style="display:none;"></div>
+            </div>
+            <div class="mb-4">
+              <label for="photoUrl" class="form-label" style="color: #5b7668; font-size: 1.1rem;">URL de la Foto</label>
+              <input type="url" class="form-control" id="photoUrl"  placeholder="Introduce la URL de la foto del producto">
+              <div id="photoUrlError" class="invalid-feedback" style="display:none;"></div>
+            </div>
+            <!-- Lista de URLs -->
+            <div id="photoUrlsList" name="urls"  class="mb-4">
+              <label class="form-label" style="color: #5b7668; font-size: 1.1rem;">URLs de las Fotos Añadidas</label>
+              <ul id="photoUrls" class="list-unstyled" name="urls"  style="padding-left: 0;">
+                <!-- Las URLs añadidas se mostrarán aquí -->
+              </ul>
+            </div>
+            <button type="button" class="btn" style="background-color: #7FB77E; color: white; width: auto; font-size: 1rem;" onclick="addPhotoUrl()">Agregar Foto</button>
+            <button type="submit" class="btn" style="background-color: #7FB77E; color: white; width: 100%; font-size: 1.1rem;">Agregar Producto</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="/js/nuevoProducto.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <footer th:replace="baseAdmin::footer"></footer>
+</body>
+</html>

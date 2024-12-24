@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="index::head">
+</head>
+<body>
+  <nav th:replace="index::div"></nav>
+  <main class="container my-5">
+    <div class="row justify-content-center">
+        <!-- Formulario de Registro -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg border-0 rounded-3 p-5" style="background-color: #f4f7f6;">
+                <h3 class="text-center mb-4" style="color: #5b7668; font-size: 2rem;">Registro</h3>
+
+                <!-- Formulario -->
+                <form id="registerForm" onsubmit="return validateRegister(event)" method="post" th:action="@{/intentoregistro}" th:object="${usuario}">
+                    <div class="mb-4">
+                        <label for="username" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Nombre de usuario</label>
+                        <input type="text" class="form-control" id="username" th:field="*{nombre}" placeholder="Introduce tu nombre de usuario">
+                        <div id="usernameError" class="invalid-feedback" style="display:none;"></div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="apellido" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Apellido</label>
+                        <input type="text" class="form-control" id="apellido" th:field="*{apellido}" placeholder="Introduce tu apellido">
+                        <div id="apellidoError" class="invalid-feedback" style="display:none;"></div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Correo electrónico</label>
+                        <input type="text" class="form-control" id="email" th:field="*{email}" placeholder="Introduce tu correo electrónico">
+                        <div id="emailError" class="invalid-feedback" style="display:none;"></div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Contraseña</label>
+                        <input type="password" class="form-control" id="password" th:field="*{contraseña}" placeholder="Introduce tu contraseña">
+                        <div id="passwordError" class="invalid-feedback" style="display:none;"></div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="confirmPassword" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Confirmar contraseña</label>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirma tu contraseña">
+                        <div id="confirmPasswordError" class="invalid-feedback" style="display:none;"></div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="direccion" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Dirección</label>
+                        <input type="text" class="form-control" id="direccion" th:field="*{direccion}" placeholder="Introduce tu dirección">
+                        <div id="direccionError" class="invalid-feedback" style="display:none;"></div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="telefono" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Teléfono</label>
+                        <input type="tel" class="form-control" id="telefono" tah:field="*{telefono}" placeholder="Introduce tu teléfono">
+                        <div id="telefonoError" class="invalid-feedback" style="display:none;"></div>
+                    </div>
+                    <button type="submit" class="btn" style="background-color: #7FB77E; color: white; width: 100%; font-size: 1.1rem;">Registrar</button>
+                </form>
+                <div class="mt-4 text-center">
+                    <p class="text-muted" style="font-size: 1.1rem;">¿Ya tienes cuenta? <a href="#" style="color: #7FB77E;">Iniciar sesión</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="base::footer"></footer>
+<script src="/js/registro.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

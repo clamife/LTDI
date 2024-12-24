@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="index::head">
+</head>
+<body>
+  <nav th:replace="index::div"></nav>
+
+  <main class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4">
+        <div class="card shadow-lg border-0 rounded-3 p-5" style="background-color: #f4f7f6;">
+          <h3 class="text-center mb-4" style="color: #5b7668; font-size: 2rem;">Iniciar Sesión</h3>
+          
+          <!-- Formulario de Login -->
+          <form id="loginForm" th:action="@{/login}" method="post">
+            <div class="mb-4">
+              <label for="username" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Nombre de usuario</label>
+              <input type="text" class="form-control" id="username" name="nombre" placeholder="Introduce tu nombre de usuario" style="font-size: 1.1rem;">
+              <div id="usernameError" class="invalid-feedback" style="font-size: 0.9rem;">
+                El nombre de usuario es obligatorio y debe tener al menos 3 caracteres.
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="password" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Contraseña</label>
+              <input type="password" class="form-control" id="password" name="contraseña" placeholder="Introduce tu contraseña" style="font-size: 1.1rem;">
+              <div id="passwordError" class="invalid-feedback" style="font-size: 0.9rem;">
+                La contraseña es obligatoria y debe tener al menos 6 caracteres.
+              </div>
+            </div>
+            
+            <button type="submit" class="btn" style="background-color: #7FB77E; color: white; width: 100%; font-size: 1.1rem;">Iniciar Sesión</button>
+          </form>
+
+          <div class="mt-4 text-center">
+            <p class="text-muted" style="font-size: 1.1rem;">¿No tienes cuenta? <a href="/registro" style="color: #7FB77E;">Registrarse</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer th:replace="base::footer"></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+body {
+    background-image: url('../fotos/fondo.jfif'); /* Cambia 'fondo.jfif' por tu propia imagen */
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  main.container {
+     margin-bottom: 50px; /* Ajusta el valor para crear más espacio entre el contenido y el footer */
+   flex: 1;
+   padding-bottom: 50px;
+  }
+
+
+  /* Barra de navegación */
+  .navbar {
+    background-color: #5b7668; /* Verde oscuro */
+    z-index: 1000; /* Para que el menú siempre esté visible */
+  }
+
+  .navbar-brand img {
+    height: 80px;
+    width: auto;
+  }
+
+  .navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+  }
+
+  .navbar-nav .nav-link {
+    color: white;
+    font-size: 18px;
+    transition: color 0.3s ease;
+  }
+
+  .navbar-nav .nav-link:hover {
+    color: #7FB77E; /* Verde claro */
+  }
+
+  /* Estilo para el desplegable */
+  .dropdown-menu {
+    background-color: #5b7668; /* Fondo verde bosque */
+    border: none; /* Sin bordes */
+    z-index: 1050; /* Superposición correcta */
+  }
+
+  .dropdown-item {
+    color: white;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .dropdown-item:hover {
+    background-color: #7FB77E; /* Verde claro al pasar el ratón */
+    color: #2f472d; /* Texto oscuro en hover */
+  }
+   /* Footer (barra inferior) */
+  footer {
+    background-color: #5b7668; /* Verde bosque */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 16px;
+    position: relative;
+    padding-top: 30px;
+    margin-top: auto;
+  }
+
+
+  footer a {
+    color: #9aba85; /* Verde claro */
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* Títulos de las secciones */
+  h1 {
+    text-align: center;
+    margin-top: 100px;
+    font-size: 3rem;
+    color: white;
+    z-index: 2;
+    position: relative;
+    white-space: nowrap;
+  }
+  @media (max-width: 1200px) {
+      h1 {
+            font-size: 1.5rem; /* Reduce el tamaño del texto */
+      }
+    }
+  /* Estilo de las imágenes */
+  .photo-grid img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  .photo-grid img:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+  }

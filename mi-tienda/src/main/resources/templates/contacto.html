@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="index::head">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <nav th:replace="index::div"></nav> <!-- Eliminar margen superior del nav -->
+
+  <main class="container my-5">
+    <div class="text-center" style="margin-top: 0;"> <!-- Eliminar margen superior en el div del título -->
+      <h1>
+        Contacto
+      </h1>
+    </div>
+  
+    <!-- Sección de contacto con fondo claro y sombras utilizando clases de Bootstrap -->
+    <div class="bg-light p-5 rounded shadow-sm">
+      <h3 class="text-center" style="color: #2D4D28;">¿En qué puedo ayudarte?</h3> <!-- Título con verde -->
+      <p class="fs-4 mt-3 text-center" style="color: #6c757d;"> <!-- Gris para texto -->
+        Si tienes alguna pregunta, duda o necesitas más información, no dudes en ponerte en contacto conmigo. Estaré encantada de ayudarte en lo que necesites.
+      </p>
+      
+      <div class="row text-center mt-4">
+        <div class="col-12 col-md-4">
+          <h4><i class="fas fa-envelope"></i> Correo Electrónico</h4>
+          <p><a href="mailto:latiendadeinma@gmail.com" class="fs-5" style="color: #2D4D28;">latiendadeinma@gmail.com</a></p> <!-- Verde personalizado -->
+        </div>
+        <div class="col-12 col-md-4">
+          <h4><i class="fas fa-phone-alt"></i> Teléfono</h4>
+          <p> 625148329</p> <!-- Verde personalizado -->
+        </div>
+        <div class="col-12 col-md-4">
+          <h4><i class="fas fa-map-marker-alt"></i> Dirección</h4>
+          <p>Calle Galena N2</p>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <h4 class="text-center" style="color: #2D4D28;">Ubicación de la tienda</h4> <!-- Verde personalizado -->
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="embed-responsive-item" 
+                  src="https://www.google.com/maps/embed/v1/place?q=Calle%20Ficticia%2C%20123%2C%20Ciudad%2C%20País&key=YOUR_GOOGLE_MAPS_API_KEY" 
+                  allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+      <div class="text-center mt-5">
+        <a href="https://www.instagram.com/eldragonazulpulseras/" target="_blank" 
+           class="btn btn-success btn-lg rounded-pill px-5 py-3 shadow-lg" style="background-color: #2D4D28;"> <!-- Verde personalizado -->
+          <img src="/fotos/insta.jpg" alt="Instagram logo" style="width: 50px; height: 50px; margin-right: 15px;">
+          Síguenos en Instagram
+        </a>
+      </div>
+    </div>
+  
+  </main>
+  
+  <footer th:replace="base::footer"></footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

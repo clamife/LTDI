@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="index::head">
+</head>
+<link rel="stylesheet" href="/css/productos.css">
+<body>
+    <nav th:replace="index::div"></nav>
+    <div class="container mt-5">
+        
+            <h1 class="text-center mb-2" th:text="${categoria.nombreCategoria}" style="margin-top: 0;"></h1> <!-- Eliminar margen superior del título -->
+            <p class="text-center mb-4" th:text="${categoria.descripcionCategoria}"></p>
+          
+          
+
+          <div class="row">
+            <!-- Reemplaza el contenido de los productos dinámicamente con Thymeleaf -->
+            <div class="col-md-3 mb-4" th:each="producto : ${productos}">
+                <!-- Enlace al producto -->
+                <a th:href="@{/producto/{idProducto}(idProducto=${producto.idProducto})}" class="text-decoration-none">
+                    <div class="card h-100 shadow-lg border-0 rounded" style="background-color: #e2f7e3; transition: transform 0.2s ease-in-out;">
+                        <!-- Muestra solo la primera foto del producto -->
+                        <div class="m-2">
+                            <img th:src="${producto.fotos[0].urlFoto}" alt="Foto del producto" 
+                                 class="img-fluid rounded" style="max-width: 100%; height: auto; object-fit: cover;">
+                        </div>
+                        <div >
+                            <!-- Nombre del producto -->
+                            <h5  th:text="${producto.nombreProducto}">Nombre del Producto</h5>
+                            <!-- Precio del producto -->
+                            <p th:text="'Precio: ' + ${producto.precio} + ' €'">Precio: 0 €</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+    <footer th:replace="base::footer"></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    
+  </body>
+  
+  </html>

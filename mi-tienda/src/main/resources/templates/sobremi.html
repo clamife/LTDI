@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="index::head">
+</head>
+<body>
+  <nav th:replace="index::div" style="margin-top: 0;"></nav> <!-- Eliminar margen superior del nav -->
+
+  <main class="container my-5">
+    <!-- Título destacado sin fondo negro translúcido -->
+    <div class="text-center" style="margin-top: 0;"> <!-- Eliminar margen superior en el div del título -->
+      <h1>
+        Sobre Mí
+      </h1>
+    </div>
+  
+    <div class="row align-items-center">
+      <!-- Columna de la imagen (más grande y responsive) -->
+      <div class="col-lg-6 col-md-12 mb-4 mb-md-0 text-center">
+        <img src="fotos/inma.jpeg" alt="Inma trabajando" class="img-fluid rounded shadow-lg" style="max-width: 100%; height: auto; max-height: 80vh;">
+      </div>
+      
+      <!-- Columna del texto sin fondo negro translúcido -->
+      <div class="col-lg-6 col-md-12">
+        <div>
+          <p class="fs-5">
+            ¡Hola! Soy Inma, una apasionada del arte de coser y tejer desde que tengo memoria. Desde pequeña, la costura ha sido más que un pasatiempo; es una forma de expresar mi creatividad y llevar alegría a los demás. 
+            A lo largo de los años, he perfeccionado mi técnica y aprendido a combinar tradición e innovación en cada pieza que creo.
+          </p>
+          <p class="fs-5 mt-3">
+            Además de dedicarme a la creación, también soy profesora, y una de mis mayores satisfacciones es compartir lo que sé. Por eso, en <strong>La Tienda de Inma</strong> encontrarás no solo productos únicos hechos a mano, sino también <strong>kits de 'Hazlo tú mismo'</strong>, diseñados para que aprendas a tejer y coser desde cero. Cada kit incluye materiales, instrucciones claras y tutoriales para guiarte paso a paso.
+          </p>
+          <p class="fs-5 mt-3">
+            Mi objetivo es que disfrutes tanto como yo de esta maravillosa forma de arte y que descubras todo lo que puedes crear con tus propias manos. ¡Gracias por apoyar mi sueño y formar parte de esta comunidad creativa!
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <footer th:replace="base::footer"></footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

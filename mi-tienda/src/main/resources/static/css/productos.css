@@ -1,0 +1,69 @@
+/* Efecto al pasar el ratón sobre la tarjeta */
+.card:hover {
+    transform: scale(1.05); /* Efecto de aumento */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra suave para resaltar */
+    border: 2px solid #c5d5a2; /* Borde tipo costura en el hover */
+}
+
+/* Estilo del fondo blanco */
+body {
+    background-color: #ffffff; /* Fondo blanco limpio */
+}
+
+/* Estilo de las cajas de los productos */
+.card {
+    background-color: #f4f7f4; /* Fondo verde muy suave, casi blanco, para un look delicado */
+    border-radius: 8px; /* Bordes redondeados para un toque más suave */
+    border: 1px solid #c5d5a2; /* Borde fino tipo costura */
+    padding: 15px;
+    transition: all 0.3s ease; /* Transición suave */
+}
+
+/* Estilo para la tarjeta al pasar el ratón */
+.card:hover {
+    background-color: #e0f0e0; /* Fondo verde más claro al pasar el ratón */
+    transform: scale(1.05); /* Efecto de aumento */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
+}
+
+/* Estilo del contenido dentro de la tarjeta */
+.card-body {
+    padding: 1.25rem;
+}
+
+/* Estilo para el título dentro de la tarjeta */
+.card-title {
+    font-size: 1.2rem; /* Tamaño de fuente ajustado para mayor legibilidad */
+    font-weight: bold;
+    color: #3a4e38; /* Verde oscuro y elegante */
+    font-family: 'Georgia', serif; /* Fuente más artesanal */
+    margin-bottom: 10px;
+}
+
+/* Estilo para el texto (precio, descripción) */
+.card-text {
+    color: #4e8b3e; /* Verde suave para los precios */
+    font-size: 1rem; /* Tamaño adecuado para el texto */
+    font-family: 'Arial', sans-serif; /* Fuente limpia para texto general */
+    line-height: 1.6; /* Espaciado de línea para mayor legibilidad */
+}
+
+/* Borde de la tarjeta tipo costura */
+.card {
+    border: 1px solid #c5d5a2; /* Borde estilo costura */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Fondo de la tarjeta con estilo artesanal */
+.card-body {
+    background-color: #f4f7f4; /* Fondo suave que resalta el producto */
+    border-radius: 8px;
+}
+
+/* Fondo semitransparente para el texto dentro de la tarjeta */
+.card-body h5,
+.card-body p {
+    background-color: rgba(0, 0, 0, 0.1); /* Fondo negro semitransparente */
+    padding: 5px;
+    border-radius: 5px;
+}

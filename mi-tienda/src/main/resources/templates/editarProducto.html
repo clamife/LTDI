@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head >  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Página Web</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/estiloBase.css"> 
+  <style>
+    
+  </style>
+  
+</head>
+<body>
+  <nav th:replace="baseAdmin::nav"></nav>
+  <main class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="row mb-4">
+          <div class="col-2">
+            <a href="/gestionProductos" class="btn btn-lg" style="background-color: #7FB77E; color: white; font-size: 1.2rem; width: 100px;">Atrás</a>
+          </div>
+          <div class="col-8 text-center">
+            <h2 class="mb-0" style="color: #5b7668;">Editar Producto</h2>
+          </div>
+        </div>
+        <div class="card shadow-lg border-0 rounded-3 p-5" style="background-color: #f4f7f6;">
+          <form id="productForm" method="post" th:object="${producto}" th:action="@{/editarProducto/{id}(id=${producto.idProducto})}">
+  
+            <div class="mb-4">
+              <div class="mb-2">
+                <span class="text-muted" style="font-size: 1rem;">Nombre actual: </span>
+                <span class="font-weight-bold" style="font-size: 1rem;" th:text="${producto.nombreProducto}"></span>
+              </div>
+              <label for="nombre" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Modifica aquí el nombre del producto</label>
+              <input type="text" class="form-control" id="nombre" th:field="*{nombreProducto}" placeholder="Introduce el nuevo nombre del producto">
+              <div id="nameError" class="text-danger small mt-1"></div> <!-- Aquí se mostrará el error -->
+            </div>
+            
+            <!-- Categoría del producto -->
+            <div class="mb-4">
+              
+              <!-- Categoría Original -->
+              <div class="mb-2">
+                <span class="text-muted" style="font-size: 1rem;">Categoría actual del producto: </span>
+                <span class="font-weight-bold" style="font-size: 1rem;" th:text="${producto.categoria.nombreCategoria}">Categoría Actual</span>
+              </div>
+              
+              <label for="categoria" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Modifica aquí la categoría del producto</label>
+              <select class="form-control" id="categoria" th:field="*{categoria}" required>
+                <option value="" disabled selected>Selecciona una categoría</option>
+                <option th:each="categoria : ${categorias}" th:value="${categoria.idCategoria}" th:text="${categoria.nombreCategoria}" th:selected="${producto.categoria.idCategoria == categoria.idCategoria}"></option>
+              </select>
+            </div>
+          
+            <div class="mb-4">
+              <div class="mb-2">
+                <span class="text-muted" style="font-size: 1rem;">Descripción actual del producto: </span>
+                <span class="font-weight-bold" style="font-size: 1rem;" th:text="${producto.descripcion}"></span>
+              </div>
+              <label for="descripcion" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Modifica aquí la descripción del producto</label>
+              <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="3" placeholder="Introduce una nueva descripción"></textarea>
+              <div id="descriptionError" class="text-danger small mt-1"></div> <!-- Aquí se mostrará el error -->
+            </div>
+          
+            <div class="mb-4">
+              <div class="mb-2">
+                <span class="text-muted" style="font-size: 1rem;">Precio actual del producto: </span>
+                <span class="font-weight-bold" style="font-size: 1rem;" th:text="${producto.precio}"></span>
+              </div>
+              <label for="precio" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Modifica aquí el precio del producto (€)</label>
+              <input type="number" class="form-control" id="precio" th:field="*{precio}" placeholder="Introduce el precio del producto" >
+              <div id="priceError" class="text-danger small mt-1"></div> <!-- Aquí se mostrará el error -->
+            </div>
+          
+            <!-- URL de la Foto -->
+            <div class="mb-4">
+              <label for="photoUrl" class="form-label" style="color: #5b7668; font-size: 1.1rem;">URL de la Foto</label>
+              <input type="url" class="form-control" id="photoUrl" placeholder="Introduce la URL de la foto del producto">
+            </div>
+            <div id="photoUrlError" class="invalid-feedback" style="display:none;"></div>
+            
+              <div id="currentUrlsList" class="mb-4">
+                <label class="form-label" style="color: #5b7668; font-size: 1.1rem;">URLs actuales de las fotos del producto</label>
+                <ul id="currentPhotoUrls" class="list-unstyled" style="padding-left: 0;">
+                  <!-- Se llenará con las URLs actuales desde el servidor -->
+                  <li th:each="foto : ${producto.fotos}" class="d-flex justify-content-between align-items-center">
+                    <span th:text="@{${foto.urlFoto}}"></span>
+                  </li>
+                </ul>
+              </div>
+              
+              <!-- Lista de URLs modificadas -->
+              <div id="modifiedUrlsList" class="mb-4">
+                <label class="form-label" style="color: #5b7668; font-size: 1.1rem;">URLs modificadas de las fotos del producto</label>
+                <ul id="photoUrlsMod" class="list-unstyled" style="padding-left: 0;">
+                  <li th:each="foto : ${producto.fotos}" class="d-flex justify-content-between align-items-center">
+                    <span th:text="@{${foto.urlFoto}}"></span>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="removePhotoUrl(this)">Eliminar</button>
+                  </li>
+                </ul>
+              </div>
+              <div id="photoModError" class="text-danger small mt-1"></div> 
+              <input type="hidden" id="photoUrlsJson" name="photoUrlsJson" />
+            <button type="button" class="btn" style="background-color: #7FB77E; color: white; width: auto; font-size: 1rem;"  onclick="addPhotoUrl()">Agregar Foto</button>
+            <button type="submit" class="btn" style="background-color: #7FB77E; color: white; width: 100%; font-size: 1.1rem;">Editar Producto</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+document.getElementById("productForm").addEventListener("submit", validateProductForm);
+let photoUrls = [];
+function validateProductForm(event) {
+  // Prevenir el envío del formulario si hay errores
+  event.preventDefault();
+
+  // Obtener los campos
+  const nombre = document.getElementById("nombre");
+  const descripcion = document.getElementById("descripcion");
+  const precio = document.getElementById("precio");
+
+  // Obtener los elementos de error
+  const nameError = document.getElementById("nameError");
+  const descriptionError = document.getElementById("descriptionError");
+  const priceError = document.getElementById("priceError");
+  const urlModError = document.getElementById("photoModError");
+
+  // Resetear los mensajes de error
+  nameError.textContent = "";
+  descriptionError.textContent = "";
+  priceError.textContent = "";
+  urlModError.textContent = "";
+
+  let isValid = true;
+
+  // Validar el nombre
+  if (nombre.value.trim() === "") {
+    nameError.textContent = "El nombre no puede estar vacío.";
+    isValid = false;
+  } else if (nombre.value.trim().length < 5) {
+    nameError.textContent = "El nombre debe tener al menos 5 caracteres.";
+    isValid = false;
+  }
+
+  // Validar la descripción
+  if (descripcion.value.trim() === "") {
+    descriptionError.textContent = "La descripción no puede estar vacía.";
+    isValid = false;
+  } else if (descripcion.value.trim().length > 500) {
+    descriptionError.textContent = "La descripción no puede superar los 500 caracteres.";
+    isValid = false;
+  }
+
+  // Validar el precio
+  if (precio.value.trim() === "") {
+    priceError.textContent = "El precio no puede estar vacío.";
+    isValid = false;
+  } else if (parseFloat(precio.value) <= 0) {
+    priceError.textContent = "El precio debe ser mayor que 0.";
+    isValid = false;
+  }
+    const photoUrls = getPhotoUrlsMod(); // Recoge las URLs
+    const jsonData = JSON.stringify({ photoUrls }); 
+
+  if (photoUrls.length === 0) {
+    urlModError.textContent= "Debes proporcionar al menos una URL para las fotos.";
+    isValid = false;
+    }
+    document.querySelector('#photoUrlsJson').value = jsonData;
+
+  if (isValid) {
+     event.target.submit();
+  }
+}
+// Inicializar las URLs cargadas al abrir la página
+/*document.addEventListener("DOMContentLoaded", () => {
+  const loadedUrls = Array.from(document.querySelectorAll("#photoUrlsMod span"));
+  loadedUrls.forEach(urlElement => {
+    const url = urlElement.textContent.trim();
+    if (url !== "") { // Asegurar que no haya URLs vacías al cargar
+      photoUrls.push(url);console.log("URLs cargadas al inicio:", photoUrls);
+    }
+  });
+  
+});*/
+
+
+
+// Función para validar y agregar una URL
+function addPhotoUrl() {
+  const photoUrlInput = document.getElementById("photoUrl");
+  const photoUrlsList = document.getElementById("photoUrlsMod");
+  const errorContainer = document.getElementById("photoUrlError");
+
+  // Validar que la URL no esté vacía
+  if (photoUrlInput.value.trim() === "") {
+    errorContainer.textContent = "La URL de la foto es obligatoria.";
+    errorContainer.style.display = "block";
+    photoUrlInput.classList.add("is-invalid");
+    return;
+  } 
+
+  // Validar la longitud de la URL
+  else if (photoUrlInput.value.length < 10 || photoUrlInput.value.length > 100) {
+    errorContainer.textContent = "La URL debe tener entre 10 y 100 caracteres.";
+    errorContainer.style.display = "block";
+    photoUrlInput.classList.add("is-invalid");
+    return;
+  }
+
+  // Esconder el error si la URL es válida
+  errorContainer.style.display = "none";
+  photoUrlInput.classList.remove("is-invalid");
+
+  // Obtener la URL ingresada
+  const newUrl = photoUrlInput.value.trim();
+
+  // Verificar si la URL ya está en el array
+  if (photoUrls.includes(newUrl)) {
+    errorContainer.textContent = "Esta URL ya ha sido agregada.";
+    errorContainer.style.display = "block";
+    return;
+  }
+
+ 
+
+  // Crear un nuevo item de lista
+  const listItem = document.createElement("li");
+  listItem.classList.add("d-flex", "justify-content-between", "align-items-center");
+  listItem.innerHTML = `
+      <span>${newUrl}</span>
+      <button type="button" class="btn btn-sm btn-danger" onclick="removePhotoUrl(this)">Eliminar</button>
+  `;
+  photoUrlsList.appendChild(listItem);
+
+  // Limpiar el campo de entrada
+  photoUrlInput.value = "";
+}
+
+// Función para eliminar una URL
+function removePhotoUrl(button) {
+  const listItem = button.closest("li");
+  const urlToRemove = listItem.querySelector("span").textContent;
+
+  // Eliminar la URL del array
+  photoUrls = photoUrls.filter(url => url !== urlToRemove);
+  console.log("URLs cargadas al borrar:", photoUrls);
+
+  // Eliminar el item de la lista
+  listItem.remove();
+}
+//Obtener urls Modificadas
+function getPhotoUrlsMod() {
+  const listItems = document.querySelectorAll('#photoUrlsMod li span');
+
+  listItems.forEach((span) => {
+    photoUrls.push(span.textContent); 
+  });
+
+  return photoUrls; 
+}
+
+  </script>
+  
+  <footer th:replace="baseAdmin::footer"></footer>
+</body>
+
+</html>
