@@ -37,16 +37,14 @@
                     <p th:text="${producto.descripcion}" class="lead producto-descripcion-texto">Descripción del producto...</p>
                 </div>
 
-                <!-- Precio del Producto -->
                 <div class="mt-3">
                     <h4 th:text="'Precio: ' + ${producto.precio} + ' €'" class="producto-precio">Precio: 0 €</h4>
                 </div>
 
-                <!-- Botón Añadir al Carrito -->
                 <div class="mt-4 text-center">
-                    <button class="btn btn-lg producto-boton-carrito">
+                    <a th:href="@{/carritoAdd/{idProducto}(idProducto=${producto.idProducto})}">
                         Añadir al Carrito
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

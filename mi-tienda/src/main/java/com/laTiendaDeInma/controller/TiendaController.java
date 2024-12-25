@@ -1,5 +1,8 @@
 package com.laTiendaDeInma.controller;
-
+//TODO me falta crear la vista de miEspacio, aquí tengo que poner mis pedidos, gestionar mi usuario y carpeta de mis recursos 
+//TODO falta crear toda la rama del carrito y la implementación en javaScript 
+//TODO falta crear toda la rama del pedido, mostrarlos en la zona del admin y mostrarlos en la zona de miEspacio. 
+//TODO falta crear toda la rama de recursos y permitir que se vean en mi espacio...
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
