@@ -213,3 +213,12 @@ h1 {
   height: 40px;
   margin-right: 15px;
 }
+.mensaje-lima {
+  background-color: #d4ffb2; /* Fondo verde lima */
+  color: #006400; /* Texto verde oscuro */
+  border: 1px solid #a3e4a1; /* Borde verde claro */
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}

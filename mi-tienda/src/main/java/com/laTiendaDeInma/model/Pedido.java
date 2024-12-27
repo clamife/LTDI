@@ -25,9 +25,42 @@ public class Pedido {
     
     private String estado;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Column(name = "correo_envio")
+    private String correoEnvio;
+
+    @Column(name = "telefono_envio")
+    private String telefonoEnvio;
+
+    @Column(name = "direccion_envio")
+    private String direccionEnvio;
+
+
+    @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY)
     private List<DetallePedido> detalles = new ArrayList<>(); 
 
+    public String getCorreoEnvio() {
+        return correoEnvio;
+    }
+
+    public void setCorreoEnvio(String correoEnvio) {
+        this.correoEnvio = correoEnvio;
+    }
+
+    public String getTelefonoEnvio() {
+        return telefonoEnvio;
+    }
+
+    public void setTelefonoEnvio(String telefonoEnvio) {
+        this.telefonoEnvio = telefonoEnvio;
+    }
+
+    public String getDireccionEnvio() {
+        return direccionEnvio;
+    }
+
+    public void setDireccionEnvio(String direccionEnvio) {
+        this.direccionEnvio = direccionEnvio;
+    }
 
     public Pedido() {
         this.detalles = new ArrayList<>(); // También en el constructor por si acaso

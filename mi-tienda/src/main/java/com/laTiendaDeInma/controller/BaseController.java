@@ -18,7 +18,6 @@ public class BaseController {
     @ModelAttribute("categorias")
     public List<Categoria> agregarCategoriasAlModelo() {
 
-        System.out.println("Cargando categorías: " );
         return categoriaService.obtenerTodas();
 
     }

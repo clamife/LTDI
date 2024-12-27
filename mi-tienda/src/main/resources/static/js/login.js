@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function validateLogin(event) {
-    // Evitar el envío del formulario si no es válido
     event.preventDefault(); 
     
     const usernameInput = document.getElementById("username");

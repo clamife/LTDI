@@ -3,6 +3,8 @@ package com.laTiendaDeInma.controller;
 import com.laTiendaDeInma.model.Pedido;
 import com.laTiendaDeInma.model.Categoria;
 import com.laTiendaDeInma.model.DetallePedido;
+import java.time.LocalDate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.laTiendaDeInma.service.PedidoService;
 import com.laTiendaDeInma.service.CategoriaService;
 import com.laTiendaDeInma.service.DetallePedidoService;
@@ -14,12 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,9 +59,8 @@ public class PedidoController {
 
         // Obtener el producto
         Optional<Producto> productoOpt = productoService.obtenerProductoPorId(idProducto);
-        
-        List<Categoria> categoria = categoriaService.obtenerTodas();
-        model.addAttribute("categoria", categoria);
+        List<Categoria> categorias = categoriaService.obtenerTodas();
+        model.addAttribute("categorias", categorias);
         if (productoOpt.isPresent()) {
             Producto producto = productoOpt.get();
             
@@ -88,9 +92,8 @@ public class PedidoController {
     @DeleteMapping("/eliminarDetalle/{nombreProducto}")
     public ResponseEntity<String> eliminarDetalle(@PathVariable String nombreProducto, HttpSession session, Model model) {
         // Obtener el pedido de la sesión
-        
-        List<Categoria> categoria = categoriaService.obtenerTodas();
-        model.addAttribute("categoria", categoria);
+        List<Categoria> categorias = categoriaService.obtenerTodas();
+        model.addAttribute("categorias", categorias);
         Pedido pedido = (Pedido) session.getAttribute("pedido");
         if (pedido != null && pedido.getDetalles() != null) {
             // Buscar el detalle que se quiere eliminar por nombre de producto
@@ -130,7 +133,8 @@ public class PedidoController {
     // Mostrar el carrito
     @GetMapping("/carrito")
     public String verCarrito(HttpSession session, Model model) {
-        
+        List<Categoria> categorias = categoriaService.obtenerTodas();
+        model.addAttribute("categorias", categorias);
         Pedido pedido = (Pedido) session.getAttribute("pedido");
 
         // Si no existe un pedido en sesión, se muestra el carrito vacío
@@ -145,38 +149,55 @@ public class PedidoController {
 
         // Si el carrito tiene productos, se muestra normalmente
         model.addAttribute("pedido", pedido);
-        List<Categoria> categoria = categoriaService.obtenerTodas();
-        model.addAttribute("categoria", categoria);
         return "carrito"; // Vista de carrito con productos
     }
 
     // Finalizar compra (requiere que el usuario esté logueado)
-    @GetMapping("/finalizar-compra")
-    public String finalizarCompra(HttpSession session, Usuario usuario, Model model) {
+    @GetMapping("/finalizarPedido")
+    @Transactional
+    public String finalizarCompra(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+        List<Categoria> categorias = categoriaService.obtenerTodas();
+        model.addAttribute("categorias", categorias);
         Pedido pedido = (Pedido) session.getAttribute("pedido");
-        List<Categoria> categoria = categoriaService.obtenerTodas();
-        model.addAttribute("categoria", categoria);
-
-
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        
         if (pedido == null || pedido.getDetalles().isEmpty()) {
-            return "redirect:/carrito"; // Si no hay productos, vuelve al carrito
+            return "redirect:/carrito";
         }
-
-        // Si el usuario está logueado, se asocia el pedido al usuario
-        if (usuario != null) {
-            pedido.setUsuario(usuario);
-        } else {
-            // Si no está logueado, redirigir al login
+        if (usuario == null) {
+            redirectAttributes.addFlashAttribute("mensaje", "Debes iniciar sesión para realizar un pedido.");
             return "redirect:/login";
         }
-
-        // Guardar el pedido en la base de datos
-        pedidoService.crearPedido(pedido, pedido.getDetalles());
-        
-        // Limpiar el carrito de la sesión
-        session.removeAttribute("pedido");
-
         model.addAttribute("pedido", pedido);
-        return "confirmacion-compra"; // Vista de confirmación de compra
+        return "/finalizarPedido"; 
     }
+
+    @PostMapping("/confirmarCompra")
+    @Transactional
+    public String confirmarCompra(@ModelAttribute("pedido") Pedido pedidoFormulario, HttpSession session, Model model){
+        Pedido pedidoSes = (Pedido) session.getAttribute("pedido");
+        List<DetallePedido> detalles = pedidoSes.getDetalles();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        pedidoSes.setEstado("En preparación");
+        pedidoSes.setFechaPedido(LocalDate.now()); 
+        pedidoSes.setUsuario(usuario);
+        pedidoSes.setDireccionEnvio(pedidoFormulario.getDireccionEnvio());
+        pedidoSes.setTelefonoEnvio(pedidoFormulario.getTelefonoEnvio());
+        pedidoSes.setCorreoEnvio(pedidoFormulario.getCorreoEnvio());
+    
+       Pedido pedidodoGu = pedidoService.guardarPedido(pedidoSes);
+       System.out.println("Guardando pedido con ID: " + pedidodoGu.getIdPedido());
+       for (DetallePedido detalle : detalles) {
+        detalle.setPedido(pedidodoGu); 
+        detallePedidoService.guardar(detalle); 
+        }
+        
+        session.removeAttribute("pedido");
+    
+        List<Categoria> categorias = categoriaService.obtenerTodas();
+        model.addAttribute("categorias", categorias);
+        return "base"; 
+    }
+    
 }

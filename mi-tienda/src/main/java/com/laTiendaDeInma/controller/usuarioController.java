@@ -69,15 +69,13 @@ public class usuarioController {
    
   @PostMapping("/intentoregistro")
     public String registrarUsuario(@Valid @ModelAttribute Usuario usuario, BindingResult result, Model model)
- {      System.out.println("Datos recibidos: " + usuario);
-        // Validaciones en el backend
+ {      
         if (result.hasErrors()) {
             List<Categoria> categorias = categoriaService.obtenerTodas();
             model.addAttribute("categorias", categorias);
-            return "registro"; // Vuelve a la vista de registro si hay errores
+            return "registro"; 
         }
         
-        // Verificar si el correo ya está registrado (puedes agregar esta validación en el servicio)
         if (usuarioService.existeUsuarioPoremail(usuario.getEmail())) {
             model.addAttribute("error", "El correo electrónico ya está registrado.");
             List<Categoria> categorias = categoriaService.obtenerTodas();
@@ -87,10 +85,9 @@ public class usuarioController {
 
         // Guardar el nuevo usuario en la base de datos
         Usuario usuarioGuardado = usuarioService.guardarUsuario(usuario);
-        System.out.println("Usuario guardado: " + usuarioGuardado);
         List<Categoria> categorias = categoriaService.obtenerTodas();
         model.addAttribute("categorias", categorias);
-        return "redirect:/login";  // Redirigir al login después del registro
+        return "redirect:/login"; 
     }
 
       @DeleteMapping("/usuarios/{id}")
