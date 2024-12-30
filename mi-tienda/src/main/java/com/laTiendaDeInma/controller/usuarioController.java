@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -39,54 +40,52 @@ public class usuarioController {
     public String login(@RequestParam("nombre") String nombre, 
                     @RequestParam("contraseña") String contraseña, 
                     HttpSession session,
-                    Model model) {
+                    Model model, 
+                    RedirectAttributes redirectAttributes) {
     Optional<Usuario> usuarioOpt = usuarioService.encontrarUsuarioPornombre(nombre);
+    List<Categoria> categorias = categoriaService.obtenerTodas();
+    model.addAttribute("categorias", categorias);
     
     if (usuarioOpt.isPresent()) {
         Usuario usuario = usuarioOpt.get();
         boolean usuarioValido = usuarioService.validarUsuario(nombre, contraseña);
         
-        if (usuarioValido) {
+        if (usuarioValido && usuario.getEsAdmin()) {
             usuario.setContrasena("");
             session.setAttribute("usuario", usuario);
-            List<Categoria> categorias = categoriaService.obtenerTodas();
-            model.addAttribute("categorias", categorias);
+            return "baseAdmin";
+        }else if(usuarioValido ){
+            usuario.setContrasena("");
+            session.setAttribute("usuario", usuario);
             return "base";
-        } else {
-            model.addAttribute("error", "Nombre de usuario o contraseña incorrectos.");
-            List<Categoria> categorias = categoriaService.obtenerTodas();
-            model.addAttribute("categorias", categorias);
-            return "login"; 
+        }
+         else {
+            redirectAttributes.addFlashAttribute("mensaje", "Nombre de usuario o contraseña incorrectos.");
+            return "redirect:/login"; 
         }
     } else {
-        model.addAttribute("error", "Nombre de usuario o contraseña incorrectos.");
-        List<Categoria> categorias = categoriaService.obtenerTodas();
-        model.addAttribute("categorias", categorias);
-        return "login"; 
+        redirectAttributes.addFlashAttribute("mensaje", "Nombre de usuario o contraseña incorrectos.");
+        return "redirect:/login"; 
     }
 }
 
    
   @PostMapping("/intentoregistro")
-    public String registrarUsuario(@Valid @ModelAttribute Usuario usuario, BindingResult result, Model model)
- {      
+    public String registrarUsuario(@Valid @ModelAttribute Usuario usuario, BindingResult result, Model model){
+        List<Categoria> categorias = categoriaService.obtenerTodas();
+        model.addAttribute("categorias", categorias);
+      
         if (result.hasErrors()) {
-            List<Categoria> categorias = categoriaService.obtenerTodas();
-            model.addAttribute("categorias", categorias);
             return "registro"; 
         }
         
         if (usuarioService.existeUsuarioPoremail(usuario.getEmail())) {
             model.addAttribute("error", "El correo electrónico ya está registrado.");
-            List<Categoria> categorias = categoriaService.obtenerTodas();
-            model.addAttribute("categorias", categorias);
             return "registro"; // Vuelve a la vista de registro con el mensaje de error
         }
 
         // Guardar el nuevo usuario en la base de datos
-        Usuario usuarioGuardado = usuarioService.guardarUsuario(usuario);
-        List<Categoria> categorias = categoriaService.obtenerTodas();
-        model.addAttribute("categorias", categorias);
+        usuarioService.guardarUsuario(usuario);
         return "redirect:/login"; 
     }
 

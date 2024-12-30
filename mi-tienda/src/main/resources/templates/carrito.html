@@ -5,11 +5,18 @@
 <link rel="stylesheet" href="/css/productos.css">
 <body>
     <nav th:replace="index::div"></nav>
+    <header>
+        <div class="text-center"> 
+            <h1 class="titulo">
+              Carrito de compra
+            </h1>
+          </div>
+    </header>
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Carrito de Compras</h1>
+        
 
         <!-- Verificar si el carrito existe -->
-        <div th:if="${session.pedido != null}">
+        <div th:if="${session.pedido != null}" class="intro-texto">
             <!-- Información del pedido -->
             <div >
                 <div >
@@ -64,7 +71,7 @@
 
         <!-- Mensaje si el carrito está vacío -->
         <div th:if="${session.pedido == null}">
-            <p class="text-center">El carrito está vacío. ¡Añade productos para comenzar!</p>
+            <p class="intro-texto">El carrito está vacío. ¡Añade productos para comenzar!</p>
         </div>
     </div>
 

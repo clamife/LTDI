@@ -22,4 +22,8 @@ public class DetallePedidoService {
     public List<DetallePedido> obtenerTodos() {
         return detallePedidoRepository.findAll();
     }
+    
+    public List<DetallePedido> obtenerTodosPorIdpedido(Long idPedido) {
+        return detallePedidoRepository.findByPedido_IdPedido(idPedido);
+    }
 }

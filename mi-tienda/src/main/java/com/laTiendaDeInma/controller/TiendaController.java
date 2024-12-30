@@ -5,12 +5,15 @@ package com.laTiendaDeInma.controller;
 //TODO falta crear toda la rama de recursos y permitir que se vean en mi espacio...
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
 import com.laTiendaDeInma.model.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.laTiendaDeInma.service.CategoriaService;
+import com.laTiendaDeInma.service.DetallePedidoService;
+import com.laTiendaDeInma.service.PedidoService;
 import com.laTiendaDeInma.service.usuarioService;
 import java.util.List;
 @Controller
@@ -19,6 +22,10 @@ public class TiendaController {
     private usuarioService usuarioService;
     @Autowired
     private CategoriaService categoriaService;
+    @Autowired
+    private PedidoService pedidoService;
+    @Autowired
+    private DetallePedidoService detallePedidoService;
 
     @GetMapping("/") 
     public String base(Model model) {
@@ -54,6 +61,12 @@ public class TiendaController {
         model.addAttribute("categorias", categorias);
         return "login";
     }
+    @GetMapping("/miZona")
+    public String miZona(Model model) {
+        List<Categoria> categorias = categoriaService.obtenerTodas();
+        model.addAttribute("categorias", categorias);
+        return "miZona";
+    }
 
     @GetMapping("/registro")
     public String registro(Model model) {
@@ -63,7 +76,7 @@ public class TiendaController {
         return "registro";
     }
 
-    @GetMapping("/gsdgr")//TODO tengo pte gestionar mi vida
+    @GetMapping("/baseAdmin")//TODO tengo pte gestionar mi vida
     public String baseAdmin() {
         return "baseAdmin";
     }
@@ -81,6 +94,8 @@ public class TiendaController {
         model.addAttribute("categoria", categoria);
         return "gestionCategorias";
     }
+    
+    
 
     @GetMapping("/nuevaCategoria")
     public String nuevaCategoria(Model model) {

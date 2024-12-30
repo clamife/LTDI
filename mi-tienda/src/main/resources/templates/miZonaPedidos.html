@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="index::head">
+</head>
+<link rel="stylesheet" href="/css/productos.css">
+<body> 
+    <nav th:replace="index::div"></nav>
+    <div class="container mt-5">
+        <div class="row mb-4">
+            <div class="col-2">
+                <a href="/miZona" class="btn btn-success btn-lg">
+                    <i class="fas fa-arrow-left"></i> Atrás
+                </a>
+            </div>
+            <div class="col-8 text-center">
+                <h1 class="titulo" >Mis Pedidos</h1>
+            </div>
+        </div>
+        <div class="list-group">
+            <div class="list-group-item list-group-item-action mb-4 shadow-sm border-0" th:each="pedido : ${pedido}" style="padding: 25px; font-size: 1.2rem;"> <!-- Fuente más pequeña -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong style="font-size: 1.4rem;">ID Pedido: <span th:text="${pedido.idPedido}" style="font-weight: bold;"></span></strong>
+                        <p class="mb-1 text-muted" style="font-size: 1.2rem;"> <!-- Reducir tamaño -->
+                            <i class="fas fa-calendar-day"></i> <span>Fecha: <span th:text="${pedido.fechaPedido}"></span></span> |
+                            </i> <span>Total: <span th:text="${pedido.total} + ' €'"></span></span>|
+                            <i class="fas fa-info-circle"></i> <span>Estado: <span th:text="${pedido.estado}" ></span></span>
+                        </p>
+                    </div>
+                    <a th:href="@{/miZonaDetallePedido/{idPedido}(idPedido=${pedido.idPedido})}" class="btn btn-success btn-lg" style="font-size: 1.1rem; padding: 10px 20px;"> <!-- Botón más pequeño -->
+                        <i class="fas fa-search"></i> Ver Detalles
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    
+    <footer th:replace="base::footer"></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+
+</html>

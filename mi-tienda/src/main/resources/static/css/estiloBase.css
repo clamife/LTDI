@@ -1,6 +1,7 @@
 /* Aplicar fuente global */
 body {
-  background: linear-gradient(to bottom, #d1e6d4, #f1f1f1); 
+  /*background: linear-gradient(to bottom, #d1e6d4, #f1f1f1);*/
+  background-image: url('/fotos/sesion.avif'); 
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
@@ -170,11 +171,6 @@ h1 {
   background-color: #383838;
 }
 
-/* Sección de introducción */
-.intro-section {
-  background-color: #f9f9f9;
-}
-
 .intro-text-container {
   background-color: transparent;
   color: #333;
@@ -185,14 +181,25 @@ h1 {
 }
 
 .intro-titulo {
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: #2d2d2d;
+  background-color: rgba(255, 255, 255, 0.9); 
+  display: inline-block; 
+  padding: 20px 30px; 
+  color: #3a4e38; 
+  font-size: 2rem;
+}
+.titulo {
+  background-color: rgba(255, 255, 255, 0.9); 
+  display: inline-block; 
+  padding: 20px 30px; 
+  color: #3a4e38; 
+  font-size: 4rem;
 }
 
 .intro-texto {
-  font-size: 1.2rem;
-  color: #555;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px 30px; 
+   font-size: 1.3rem;
+  color: #3a4e38;
   line-height: 1.6;
 }
 

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -199,5 +200,37 @@ public class PedidoController {
         model.addAttribute("categorias", categorias);
         return "base"; 
     }
-    
+    @GetMapping("/gestionPedidos")
+    public String gestionPedidos(Model model) {
+        List<Pedido> pedido = pedidoService.obtenerTodos() ;
+        model.addAttribute("pedido", pedido);
+        return "gestionPedidos";
+    }
+    @GetMapping("/detallesPedido/{idPedido}")
+    public String detallesPedidos(@PathVariable Long idPedido,Model model) {
+        List<DetallePedido> detallePedido = detallePedidoService.obtenerTodosPorIdpedido(idPedido) ;
+        model.addAttribute("detallePedido", detallePedido);
+        return "detallesPedido";
+    }
+    @PostMapping("/actualizarEstadoPedido/{idPedido}")
+    public String actualizarEstadoPedido(@PathVariable Long idPedido, @RequestParam String estado) {
+        Pedido pedido = pedidoService.obtenerPorId(idPedido);
+        if (pedido != null) {
+            pedido.setEstado(estado);
+            pedidoService.guardarPedido(pedido);
+        }
+        return "redirect:/gestionPedidos";
+    }
+    @GetMapping("/miZonaPedidos/{idUsuario}")
+    public String miZonaPedidos(@PathVariable Long idUsuario, Model model) {
+        List<Pedido> pedido = pedidoService.obtenerPedidosPorIdUsuario(idUsuario);
+        model.addAttribute("pedido", pedido);
+        return "miZonaPedidos";
+    }
+    @GetMapping("/miZonaDetallePedido/{idPedido}")
+    public String miZonaDetallesPedidos(@PathVariable Long idPedido, Model model) {
+        Pedido pedido = pedidoService.obtenerPorId(idPedido);
+        model.addAttribute("pedido", pedido);
+        return "miZonaDetallePedido";
+    }
 }

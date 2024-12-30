@@ -18,14 +18,22 @@
       return null; 
     })
     .then(usuario => {
-      if (usuario && usuario.nombre) {
+      if (usuario && usuario.esAdmin) {
         document.getElementById("userName").textContent = usuario.nombre;
         var dropdown = document.getElementById("accountDropdown");
         dropdown.innerHTML = `
-          <li><a class="dropdown-item" href="/mi-zona"><i class="fas fa-cogs"></i> Mi Zona</a></li>
           <li><a class="dropdown-item" href="/logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
         `;
-      } else {
+      }else if(usuario && usuario.nombre){
+        document.getElementById("userName").textContent = usuario.nombre;
+        var dropdown = document.getElementById("accountDropdown");
+        dropdown.innerHTML = `
+          <li><a class="dropdown-item" href="/miZona"><i class="fas fa-cogs"></i> Mi Zona</a></li>
+          <li><a class="dropdown-item" href="/logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
+          
+        `;
+      } 
+      else {
         // Si no hay usuario en la sesión, mostramos las opciones de Iniciar sesión y Registrarse
         var dropdown = document.getElementById("accountDropdown");
         dropdown.innerHTML = `

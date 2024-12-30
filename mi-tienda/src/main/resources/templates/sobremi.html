@@ -4,14 +4,16 @@
 </head>
 <body>
   <nav th:replace="index::div" style="margin-top: 0;"></nav> <!-- Eliminar margen superior del nav -->
-
-  <main class="container my-5">
-    <!-- Título destacado sin fondo negro translúcido -->
+  <header>
     <div class="text-center" style="margin-top: 0;"> <!-- Eliminar margen superior en el div del título -->
-      <h1 class="display-4 font-weight-bold">
+      <h1 class="titulo" >
         Sobre Mí
       </h1>
     </div>
+  </header>
+  <main class="container my-5">
+    <!-- Título destacado sin fondo negro translúcido -->
+    
   
     <div class="row align-items-center">
       <!-- Columna de la imagen (más grande y responsive) -->
@@ -21,7 +23,7 @@
       
       <!-- Columna del texto sin fondo negro translúcido -->
       <div class="col-lg-6 col-md-12">
-        <div>
+        <div class="intro-texto" >
           <p class="fs-5">
             ¡Hola! Soy Inma, una apasionada del arte de coser y tejer desde que tengo memoria. Desde pequeña, la costura ha sido más que un pasatiempo; es una forma de expresar mi creatividad y llevar alegría a los demás. 
             A lo largo de los años, he perfeccionado mi técnica y aprendido a combinar tradición e innovación en cada pieza que creo.

@@ -5,33 +5,107 @@
 <body>
   <!-- Barra de navegación -->
   <nav th:replace="index::div"></nav>
-
-  <!-- Sección de introducción -->
-  <header class="intro-section text-center py-4">
+  <header>
     <div class="intro-text-container text-center py-5">
-      <h2 class="intro-titulo">¡Bienvenida a nuestra tienda!</h2>
-      <p class="intro-texto">Aquí encontrarás una selección única de productos de macramé y crochet, diseñados con amor y atención al detalle. Descubre accesorios, ropa y decoraciones que dan un toque especial a cualquier ocasión.</p>
-      <p class="intro-texto">¿Te gusta crear? Nuestros kits DIY te proporcionan todo lo necesario para que puedas hacer tus propias piezas desde casa, con materiales de calidad y guías fáciles de seguir. Tanto si eres principiante como un experto, tenemos algo para ti.</p>
-      <p class="intro-texto">Déjate inspirar y disfruta del arte de crear con tus propias manos. ¡Es hora de dar vida a tus ideas!</p>
+      <h2 class="intro-titulo" style="background-color: rgba(255, 255, 255, 0.9); display: inline-block; padding: 20px 30px; color: #3a4e38; font-size: 2rem;">¡Bienvenida a nuestra tienda!</h2>
+      <div class="intro-texto" style="background-color: rgba(255, 255, 255, 0.9); padding: 20px 30px; color: #3a4e38; font-size: 1.3rem;">
+        <p>Aquí encontrarás una selección única de productos de macramé y crochet, diseñados con amor y atención al detalle. Descubre accesorios, ropa y decoraciones que dan un toque especial a cualquier ocasión.</p>
+        <p>¿Te gusta crear? Nuestros kits DIY te proporcionan todo lo necesario para que puedas hacer tus propias piezas desde casa, con materiales de calidad y guías fáciles de seguir. Tanto si eres principiante como un experto, tenemos algo para ti.</p>
+        <p>Déjate inspirar y disfruta del arte de crear con tus propias manos. ¡Es hora de dar vida a tus ideas!</p>
+      </div>
     </div>
   </header>
-
+  
+  <!-- Carruseles ajustados -->
   <main class="container my-5">
-    <div class="row photo-grid">
-      <div class="col-6 col-md-4 mb-4" th:each="categoria : ${categorias}">
-        <div class="text-center">
-          <div class="category-name-container">
-            <h3 th:text="${categoria.nombreCategoria}">Nombre de la Categoría</h3>
+    <div class="row g-0 mb-5">
+      <div class="col-6 p-0 position-relative">
+        <!-- Título del primer carrusel con fondo blanco y centrado encima -->
+        <h3 class="carousel-title text-center" style="background-color: rgba(255, 255, 255, 0.9); position: absolute; top: -50px; left: 50%; transform: translateX(-50%); padding: 10px 20px; color: #3a4e38; font-size: 1.5rem;">Productos de Crochet</h3>
+        <div id="carouselExampleCaptions1" class="carousel slide w-100" data-bs-ride="carousel" style="position: relative;">
+          <div class="carousel-inner" style="height: 350px;">
+            <div class="carousel-item active">
+              <img src="/fotos/crochet/topAzul1.jpg" class="d-block w-75 mx-auto" alt="Imagen 1" style="object-fit: cover; height: 350px;">
+              <div class="carousel-caption d-none d-md-block"></div>
+            </div>
+            <div class="carousel-item">
+              <img src="/fotos/crochet/topBN1.jpg" class="d-block w-75 mx-auto" alt="Imagen 2" style="object-fit: cover; height: 350px;">
+              <div class="carousel-caption d-none d-md-block"></div>
+            </div>
+            <div class="carousel-item">
+              <img src="/fotos/crochet/topColores1.jpg" class="d-block w-75 mx-auto" alt="Imagen 2" style="object-fit: cover; height: 350px;">
+              <div class="carousel-caption d-none d-md-block"></div>
+            </div>
+            <div class="carousel-item">
+              <img src="/fotos/crochet/topMorado1.jpg" class="d-block w-75 mx-auto" alt="Imagen 2" style="object-fit: cover; height: 350px;">
+              <div class="carousel-caption d-none d-md-block"></div>
+            </div>
+            <div class="carousel-item">
+              <img src="/fotos/crochet/bufandaGris1.jpg" class="d-block w-75 mx-auto" alt="Imagen 2" style="object-fit: cover; height: 350px;">
+              <div class="carousel-caption d-none d-md-block"></div>
+            </div>
           </div>
-          <a th:href="@{/productos/{idCategoria}(idCategoria=${categoria.idCategoria})}">
-            <img th:src="@{'/fotos/' + ${categoria.nombreCategoria.toLowerCase()} + '_collage.jpeg'}" 
-                 alt="Imagen de la categoría" class="img-fluid rounded">
-          </a>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions1" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions1" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+  
+      <div class="col-6 p-0 position-relative">
+        <!-- Título del segundo carrusel con fondo blanco y centrado encima -->
+        <h3 class="carousel-title text-center" style="background-color: rgba(255, 255, 255, 0.9); position: absolute; top: -50px; left: 50%; transform: translateX(-50%); padding: 10px 20px; color: #3a4e38; font-size: 1.5rem;">Producto de Macramé</h3>
+        <div id="carouselExampleCaptions2" class="carousel slide w-100" data-bs-ride="carousel" style="position: relative;">
+          <div class="carousel-inner" style="height: 350px;">
+            <div class="carousel-item active">
+              <img src="/fotos/macrame/pulseraArbol.jpg" class="d-block w-75 mx-auto" alt="Imagen 3" style="object-fit: cover; height: 350px;">
+              <div class="carousel-caption d-none d-md-block"></div>
+            </div>
+            <div class="carousel-item">
+              <img src="/fotos/macrame/pulseraHojas.jpg" class="d-block w-75 mx-auto" alt="Imagen 4" style="object-fit: cover; height: 350px;">
+              <div class="carousel-caption d-none d-md-block"></div>
+            </div>
+            <div class="carousel-item">
+              <img src="/fotos/macrame/collarArbol.jpg" class="d-block w-75 mx-auto" alt="Imagen 4" style="object-fit: cover; height: 350px;">
+              <div class="carousel-caption d-none d-md-block"></div>
+            </div>
+            <div class="carousel-item">
+              <img src="/fotos/macrame/pulseraHojas.jpg" class="d-block w-75 mx-auto" alt="Imagen 4" style="object-fit: cover; height: 350px;">
+              <div class="carousel-caption d-none d-md-block"></div>
+            </div>
+            <div class="carousel-item">
+              <img src="/fotos/macrame/pulseraZigZag.jpg" class="d-block w-75 mx-auto" alt="Imagen 4" style="object-fit: cover; height: 350px;">
+              <div class="carousel-caption d-none d-md-block"></div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
         </div>
       </div>
     </div>
+  
+    <!-- Espacio para los kits DIY -->
+    <div class="intro-text-container text-center py-5">
+      <h2 class="intro-titulo" style="background-color: rgba(255, 255, 255, 0.9); display: inline-block; padding: 20px 30px; color: #3a4e38; font-size: 2rem;">¿Quieres hacerlo tú misma?</h2>
+      <div class="intro-texto" style="background-color: rgba(255, 255, 255, 0.9); padding: 20px 30px; color: #3a4e38; font-size: 1.3rem;">
+        <p>Descubre nuestros kits DIY y empieza a coser con nosotras. ¡Todo lo que necesitas para empezar tu propio proyecto de crochet y macramé!</p>
+        <a href="/kits" class="btn btn-success btn-lg" style="font-size: 1.5rem;">Descúbrelos aquí</a>
+      </div>
+    </div>
   </main>
-
+  
+  
+  
   <footer th:fragment="footer" class="mt-auto py-4">
     <div class="d-flex justify-content-center align-items-center flex-wrap text-center">
         <p class="mb-0 me-4">
