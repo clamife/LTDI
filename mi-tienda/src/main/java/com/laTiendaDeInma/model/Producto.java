@@ -24,17 +24,27 @@ public class Producto {
     @Column(name = "stock")
     private Integer stock;
 
-    @ManyToOne(fetch = FetchType.LAZY)  // Relación con la tabla categorías
-    @JoinColumn(name = "id_categoria")  // Nombre de la columna que actúa como clave foránea
-    private Categoria categoria;  // Relacionado con la entidad Categoria
+    @ManyToOne(fetch = FetchType.LAZY)  
+    @JoinColumn(name = "id_categoria") 
+    private Categoria categoria;  
 
     @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
-    private List<Foto> fotos; // Relación con la tabla Fotos
+    private List<Foto> fotos; 
+
+     @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
+    private List<Opinion> opiniones; 
 
     @Column(name = "activo")
     private Boolean activo;
 
     // Getters y setters
+    public List<Opinion> getOpiniones(){
+        return opiniones;
+    }
+
+    public void setOpiniones(List<Opinion> opiniones){
+        this.opiniones= opiniones;
+    }
 
     public Long getIdProducto() {
         return idProducto;

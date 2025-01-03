@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,21 +45,18 @@ public class PedidoController {
     @Autowired
     private ProductoService productoService; 
 
-    // Método para añadir un producto al carrito (pedido)
     @GetMapping("/carritoAdd/{idProducto}")
     public String addToCarrito(@PathVariable Long idProducto, HttpSession session, Model model) {
-        // Obtener el pedido de la sesión o crear uno nuevo si no existe
         Pedido pedido = (Pedido) session.getAttribute("pedido");
         if (pedido == null) {
             pedido = new Pedido();
-            session.setAttribute("pedido", pedido);  // Guardar el pedido vacío en sesión
+            session.setAttribute("pedido", pedido);  
         }
 
         if (pedido.getDetalles() == null) {
         pedido.setDetalles(new ArrayList<>());
          }
 
-        // Obtener el producto
         Optional<Producto> productoOpt = productoService.obtenerProductoPorId(idProducto);
         List<Categoria> categorias = categoriaService.obtenerTodas();
         model.addAttribute("categorias", categorias);
@@ -70,14 +68,12 @@ public class PedidoController {
                 .findFirst().orElse(null);
 
             if (detalleExistente != null) {
-                // Si ya está, aumentamos la cantidad
                 detalleExistente.setCantidad(detalleExistente.getCantidad() + 1);
             } else {
-                // Si no está, lo añadimos al detalle
                 DetallePedido detallePedido = new DetallePedido();
                 detallePedido.setProducto(producto);
                 detallePedido.setCantidad(1);
-                detallePedido.setPrecioUnitario(producto.getPrecio()); // Asumiendo que tienes un campo precio
+                detallePedido.setPrecioUnitario(producto.getPrecio());
                 pedido.getDetalles().add(detallePedido);
             }
 
@@ -97,26 +93,22 @@ public class PedidoController {
         model.addAttribute("categorias", categorias);
         Pedido pedido = (Pedido) session.getAttribute("pedido");
         if (pedido != null && pedido.getDetalles() != null) {
-            // Buscar el detalle que se quiere eliminar por nombre de producto
             DetallePedido detalleAEliminar = pedido.getDetalles().stream()
-                .filter(d -> d.getProducto().getNombreProducto().equals(nombreProducto))  // Filtramos por nombre del producto
+                .filter(d -> d.getProducto().getNombreProducto().equals(nombreProducto)) 
                 .findFirst()
                 .orElse(null);
     
             if (detalleAEliminar != null) {
-                // Si la cantidad es mayor a 1, simplemente restamos la cantidad
                 if (detalleAEliminar.getCantidad() > 1) {
                     detalleAEliminar.setCantidad(detalleAEliminar.getCantidad() - 1);
                 } else {
-                    // Si la cantidad es 1, eliminamos el detalle
                     pedido.getDetalles().remove(detalleAEliminar);
                 }
     
-                // Recalcular el total del pedido
                 double total = pedido.getDetalles().stream()
                     .mapToDouble(detalle -> detalle.getPrecioUnitario() * detalle.getCantidad())
                     .sum();
-                pedido.setTotal(total); // Actualizamos el total del pedido
+                pedido.setTotal(total); 
                 session.setAttribute("pedido", pedido);
 
                 return ResponseEntity.ok("Producto eliminado del carrito");
@@ -131,29 +123,24 @@ public class PedidoController {
     
 
 
-    // Mostrar el carrito
     @GetMapping("/carrito")
     public String verCarrito(HttpSession session, Model model) {
         List<Categoria> categorias = categoriaService.obtenerTodas();
         model.addAttribute("categorias", categorias);
         Pedido pedido = (Pedido) session.getAttribute("pedido");
-
-        // Si no existe un pedido en sesión, se muestra el carrito vacío
         if (pedido == null || pedido.getDetalles().isEmpty()) {
             model.addAttribute("mensaje", "Tu carrito está vacío.");
             
         List<Categoria> categoria = categoriaService.obtenerTodas();
         model.addAttribute("categoria", categoria);
         
-            return "carrito"; // Vista de carrito vacío
+            return "carrito"; 
         }
 
-        // Si el carrito tiene productos, se muestra normalmente
         model.addAttribute("pedido", pedido);
-        return "carrito"; // Vista de carrito con productos
+        return "carrito";
     }
 
-    // Finalizar compra (requiere que el usuario esté logueado)
     @GetMapping("/finalizarPedido")
     @Transactional
     public String finalizarCompra(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
@@ -203,6 +190,7 @@ public class PedidoController {
     @GetMapping("/gestionPedidos")
     public String gestionPedidos(Model model) {
         List<Pedido> pedido = pedidoService.obtenerTodos() ;
+        Collections.reverse(pedido);
         model.addAttribute("pedido", pedido);
         return "gestionPedidos";
     }
@@ -221,16 +209,5 @@ public class PedidoController {
         }
         return "redirect:/gestionPedidos";
     }
-    @GetMapping("/miZonaPedidos/{idUsuario}")
-    public String miZonaPedidos(@PathVariable Long idUsuario, Model model) {
-        List<Pedido> pedido = pedidoService.obtenerPedidosPorIdUsuario(idUsuario);
-        model.addAttribute("pedido", pedido);
-        return "miZonaPedidos";
-    }
-    @GetMapping("/miZonaDetallePedido/{idPedido}")
-    public String miZonaDetallesPedidos(@PathVariable Long idPedido, Model model) {
-        Pedido pedido = pedidoService.obtenerPorId(idPedido);
-        model.addAttribute("pedido", pedido);
-        return "miZonaDetallePedido";
-    }
+   
 }

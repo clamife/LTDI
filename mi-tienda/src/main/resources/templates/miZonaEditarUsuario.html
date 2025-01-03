@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="index::head">
+</head>
+<link rel="stylesheet" href="/css/productos.css">
+<body> 
+    <nav th:replace="index::div"></nav>
+      <div class="container mt-5 mb-5">
+        <div class="row mb-4"></div>
+            <div class="col-2">
+                <a href="/miZona" class="btn btn-success btn-lg">
+                    <i class="fas fa-arrow-left"></i> Atrás
+                </a>
+            </div>
+            <div class="text-center" > 
+                <h1 class="titulo">Tus Datos: </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="intro-texto">
+                    <div>
+                        <form th:action="@{/usuario/guardarCambios}" method="post">
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label" >Nombre</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" th:value="${usuario.nombre}" readonly>
+                                <button type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#nombreModal" >Modificar</button>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">Contraseña</label><br>
+                                <button type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#passwordModal">Cambiar Contraseña</button>
+                            </div>
+                            <div class="mb-3">
+                                <label for="apellido" class="form-label">Apellidos</label>
+                                <input type="text" class="form-control" id="apellido" name="apellido" th:value="${usuario.apellido}" readonly>
+                                <button type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#apellidoModal">Modificar</button>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" th:value="${usuario.email}" readonly>
+                                <button type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#emailModal">Modificar</button>
+                            </div>
+                            <div class="mb-3">
+                                <label for="direccion" class="form-label">Dirección</label>
+                                <input type="text" class="form-control" id="direccion" name="direccion" th:value="${usuario.direccion}" readonly>
+                                <button type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#direccionModal">Modificar</button>
+                            </div>
+                            <div class="mb-3">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="telefono" name="telefono" th:value="${usuario.telefono}" readonly>
+                                <button type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#telefonoModal">Modificar</button>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Guardar Cambios</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    //TODO hacer comprobaciones del formato !!
+    <div class="modal fade" id="nombreModal" tabindex="-1" aria-labelledby="nombreModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="nombreModalLabel">Modificar Nombre</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" id="nombreNuevo" name="nombreNuevo" th:value="${usuario.nombre}">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="guardarNombre" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="apellidoModal" tabindex="-1" aria-labelledby="apellidoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="apellidoModalLabel">Modificar Apellidos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" id="apellidoNuevo" name="apellidoNuevo" th:value="${usuario.apellido}">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="guardarApellido" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="emailModalLabel">Modificar Email</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="email" class="form-control" id="emailNuevo" name="emailNuevo" th:value="${usuario.email}">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="guardarEmail" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="direccionModal" tabindex="-1" aria-labelledby="direccionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="direccionModalLabel">Modificar Dirección</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" id="direccionNuevo" name="direccionNuevo" th:value="${usuario.direccion}">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="guardarDireccion" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="telefonoModal" tabindex="-1" aria-labelledby="telefonoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="telefonoModalLabel">Modificar Teléfono</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" id="telefonoNuevo" name="telefonoNuevo" th:value="${usuario.telefono}">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="guardarTelefono" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="passwordModalLabel">Cambiar Contraseña</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="currentPassword" class="form-label">Contraseña Actual</label>
+                    <input type="password" class="form-control" id="currentPassword" name="currentPassword" >
+    
+                    <label for="newPassword" class="form-label mt-2">Nueva Contraseña</label>
+                    <input type="password" class="form-control" id="newPassword" name="newPassword" >
+    
+                    <label for="confirmPassword" class="form-label mt-2">Confirmar Nueva Contraseña</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" >
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="Modificar" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modals = [
+                { saveButtonId: "guardarNombre", formInputId: "nombre", modalInputId: "nombreNuevo" },
+                { saveButtonId: "guardarApellido", formInputId: "apellido", modalInputId: "apellidoNuevo" },
+                { saveButtonId: "guardarEmail", formInputId: "email", modalInputId: "emailNuevo" },
+                { saveButtonId: "guardarDireccion", formInputId: "direccion", modalInputId: "direccionNuevo" },
+                { saveButtonId: "guardarTelefono", formInputId: "telefono", modalInputId: "telefonoNuevo" }
+            ];
+
+            modals.forEach(({ saveButtonId, formInputId, modalInputId }) => {
+                const saveButton = document.getElementById(saveButtonId);
+                const formInput = document.getElementById(formInputId);
+                const modalInput = document.getElementById(modalInputId);
+
+                saveButton.addEventListener("click", () => {
+                    formInput.value = modalInput.value;
+                });
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const modals = document.querySelectorAll(".modal");
+            modals.forEach(modal => {
+                modal.addEventListener("shown.bs.modal", function () {
+                    const modalId = modal.id; 
+                    const formInputId = modalId.replace("Modal", "");
+                    const formInput = document.getElementById(formInputId); 
+                    const modalInput = modal.querySelector("input"); 
+
+                    if (formInput && modalInput) {
+                        modalInput.value = formInput.value; 
+                    }
+                });
+            });
+        });
+
+    </script>
+    <footer th:replace="base::footer"></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

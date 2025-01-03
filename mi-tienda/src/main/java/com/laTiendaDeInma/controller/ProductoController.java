@@ -2,9 +2,11 @@ package com.laTiendaDeInma.controller;
 
 import com.laTiendaDeInma.model.Categoria;
 import com.laTiendaDeInma.model.Foto;
+import com.laTiendaDeInma.model.Opinion;
 import com.laTiendaDeInma.model.Producto;
 import com.laTiendaDeInma.service.CategoriaService;
 import com.laTiendaDeInma.service.FotoService;
+import com.laTiendaDeInma.service.OpinionService;
 import com.laTiendaDeInma.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,19 +29,21 @@ public class ProductoController {
     @Autowired
     private FotoService fotoService;
 
-     @Autowired
+    @Autowired
     private CategoriaService categoriaService;
 
-    // Mostrar todos los productos
+    @Autowired
+    private OpinionService opinionService;
+
     @GetMapping("/gestionProductos")
     public String getAllProductos(Model model) {
         List<Producto> productos = productoService.obtenerTodosLosProductos();
         for (Producto producto : productos) {
-            List<Foto> fotos = fotoService.obtenerFotosPorProducto(producto.getIdProducto()); // Obtener fotos por idProducto
-            producto.setFotos(fotos); // Asignar las fotos al producto
+            List<Foto> fotos = fotoService.obtenerFotosPorProducto(producto.getIdProducto()); 
+            producto.setFotos(fotos);
         }
-        model.addAttribute("productos", productos); // Pasar productos con fotos asociadas
-        return "gestionProductos"; // Nombre de la vista
+        model.addAttribute("productos", productos);
+        return "gestionProductos"; 
 }
     @GetMapping("/productos/{idCate}")
     public String getAllProductosvista(@PathVariable("idCate") Long idCate, Model model) {
@@ -58,59 +62,43 @@ public class ProductoController {
 
 
 
-    // Mostrar los productos activos
-    @GetMapping("/activos")
-    public String obtenerProductosActivos(Model model) {
-        List<Producto> productosActivos = productoService.obtenerProductosActivos();
-        model.addAttribute("productos", productosActivos);
-        return "productos/lista";  // Vista que muestra los productos activos
-    }
-
     @GetMapping("/nuevo")
     public String mostrarFormularioDeNuevoProducto(Model model) {
-        // Obtener todas las categorías para el desplegable
         List<Categoria> categorias = categoriaService.obtenerTodas();
         List<String> urls = new ArrayList<>();
         model.addAttribute("categorias", categorias);
         model.addAttribute("urls", urls); 
         model.addAttribute("producto", new Producto());
-        return "nuevoProducto";  // Vista para crear un nuevo producto
+        return "nuevoProducto";  
     }
 
-    // Guardar nuevo producto
     @PostMapping("/nuevo")
     @Transactional
     public String guardarProducto(@ModelAttribute Producto producto, 
-            @RequestParam("categoria") Long idCategoria, // ID de la categoría seleccionada
-            @RequestParam List<String> urls, // Lista de URLs de fotos
+            @RequestParam("categoria") Long idCategoria, 
+            @RequestParam List<String> urls,
             Model model) {
-        // Validar que se hayan proporcionado URLs para las fotos
         if (urls == null || urls.isEmpty()) {
             model.addAttribute("error", "Debes proporcionar al menos una URL para las fotos.");
-            return "nuevoProducto"; // Volver al formulario con un mensaje de error
+            return "nuevoProducto"; 
         }
 
-        // Establecer la categoría seleccionada en el producto
         Categoria categoria = categoriaService.obtenerCategoriaPorId(idCategoria)
           .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
-        producto.setCategoria(categoria); // Asignar la categoría al producto
-
-        // Guardar el producto en la base de datos
+        producto.setCategoria(categoria);
         productoService.guardarProducto(producto);
 
-        // Guardar las fotos asociadas al producto
         for (String url : urls) {
             String cleanedUrl = url.trim().replace("[", "").replace("]", "").replace("\"", "");
             Foto foto = new Foto();
-            foto.setProducto(producto); // Relación con el producto
-            foto.setUrlFoto(cleanedUrl);      // Establecer la URL de la foto
-            fotoService.guardarFoto(foto); // Guardar la foto en la base de datos
+            foto.setProducto(producto); 
+            foto.setUrlFoto(cleanedUrl);   
+            fotoService.guardarFoto(foto); 
         }
 
-        return "redirect:/gestionProductos"; // Redirigir a la lista de productos
+        return "redirect:/gestionProductos"; 
     }
 
-    // Ver el detalle de un producto
     @GetMapping("/producto/{id}")
     public String verProducto(@PathVariable Long id, Model model) {
         List<Categoria> categorias = categoriaService.obtenerTodas();
@@ -120,12 +108,13 @@ public class ProductoController {
             model.addAttribute("producto", producto.get());
             List<Foto> fotos = fotoService.obtenerFotosPorProducto(id);  
             model.addAttribute("fotos", fotos);
+            List<Opinion> opiniones = opinionService.obtenerOpinionesPorProducto(id);
+            model.addAttribute("opiniones", opiniones);
             return "detalleProducto"; 
         }
         return "redirect:/productos";  
     }
 
-    // Eliminar un producto
     @DeleteMapping("/eliminar/{id}")
 public ResponseEntity<String> eliminarProducto(@PathVariable Long id) {
     boolean eliminado = productoService.eliminarProducto(id);
@@ -137,7 +126,6 @@ public ResponseEntity<String> eliminarProducto(@PathVariable Long id) {
     }
 }
 
-    // Actualizar un producto
     @GetMapping("/editarProducto/{id}")
     public String editarProducto(@PathVariable Long id, Model model) {
         Producto producto = productoService.obtenerProductoPorId(id)
@@ -168,7 +156,6 @@ public ResponseEntity<String> eliminarProducto(@PathVariable Long id) {
         return "error";  //no esta creado ya vere 
     }
 
-    // Buscar productos por nombre
     @GetMapping("/buscar")
     public String buscarProductos(@RequestParam("nombre") String nombre, Model model) {
         List<Producto> productos = productoService.buscarProductosPorNombre(nombre);

@@ -1,8 +1,16 @@
 package com.laTiendaDeInma.controller;
-//TODO me falta crear la vista de miEspacio, aquí tengo que poner mis pedidos, gestionar mi usuario y carpeta de mis recursos 
-//TODO falta crear toda la rama del carrito y la implementación en javaScript 
-//TODO falta crear toda la rama del pedido, mostrarlos en la zona del admin y mostrarlos en la zona de miEspacio. 
-//TODO falta crear toda la rama de recursos y permitir que se vean en mi espacio...
+//TODO MI ESPACIO: falta cambio de datos de usuario, reseñas y resources
+//TODO Resources: todo 
+//TODO revisar todo el código para quitar redundancias y comentarios tontos 
+//TODO cambiar los alert por mensjaes buenos 
+//TODO controlar los mensjaes que se envian a los controladores con el RedirectAttributes
+//TODO Reseñas : todo 
+//TODO si hay tiempo mirar lo de las subcategorias 
+//TODO poner el buscador en el nav
+//TODO pensar en como modificar el menu para que sea mejor 
+//TODO unificar estilos cuadros redondos y translucidos
+ //TODO cambiar que la lista de pedidos se vea el mas nuevo antes 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,19 +62,14 @@ public class TiendaController {
         model.addAttribute("categorias", categorias);
         return "preguntas";
     }
-
+   
     @GetMapping("/login")
     public String login(Model model) {
         List<Categoria> categorias = categoriaService.obtenerTodas();
         model.addAttribute("categorias", categorias);
         return "login";
     }
-    @GetMapping("/miZona")
-    public String miZona(Model model) {
-        List<Categoria> categorias = categoriaService.obtenerTodas();
-        model.addAttribute("categorias", categorias);
-        return "miZona";
-    }
+    
 
     @GetMapping("/registro")
     public String registro(Model model) {
@@ -76,7 +79,7 @@ public class TiendaController {
         return "registro";
     }
 
-    @GetMapping("/baseAdmin")//TODO tengo pte gestionar mi vida
+    @GetMapping("/baseAdmin")
     public String baseAdmin() {
         return "baseAdmin";
     }

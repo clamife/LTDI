@@ -1,11 +1,18 @@
 package com.laTiendaDeInma.service;
 
+import com.laTiendaDeInma.model.DetallePedido;
+import com.laTiendaDeInma.model.Opinion;
+import com.laTiendaDeInma.model.Pedido;
+import com.laTiendaDeInma.model.Producto;
 import com.laTiendaDeInma.model.Usuario;
 import com.laTiendaDeInma.repository.usuarioRepository;
+import com.laTiendaDeInma.repository.PedidoRepository;
+import com.laTiendaDeInma.repository.DetallePedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +24,13 @@ public class usuarioService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private DetallePedidoRepository detallePedidoRepository;
+    
 
     // Método para obtener todos los usuarios
     public List<Usuario> obtenerTodosLosUsuarios() {
@@ -94,9 +108,16 @@ public class usuarioService {
             return false;
         }
     }
-   
+     public List<Producto> obtenerProductosComprados(Long idUsuario) {
+        List<Pedido> pedidos = pedidoRepository.findByUsuario_IdUsuario(idUsuario);
+        List<Producto> productosComprados = new ArrayList<>();
+        for (Pedido pedido : pedidos) {
+            List<DetallePedido> detalles = detallePedidoRepository.findByPedido_IdPedido(pedido.getIdPedido());
+            for (DetallePedido detalle : detalles) {
+                productosComprados.add(detalle.getProducto());
+            }
+        }
+        return productosComprados;
+    }
+}
 
-public long contarUsuarios() {
-    return usuarioRepository.count();  // Devuelve el número de usuarios en la base de datos
-}
-}

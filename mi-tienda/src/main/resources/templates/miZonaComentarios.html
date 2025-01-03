@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="index::head">
+    <!-- TODO: Revisa por qué la imagen no se carga, puede estar relacionada con la URL Ajustar todo porque esta regular -->
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav th:replace="index::div"></nav>
+    <main class="flex-grow-1">
+        <div class="container mt-5">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <a th:href="@{/miZonaproductosComprados/{idUsuario}(idUsuario=${session.usuario.idUsuario})}" class="btn btn-success btn-lg">
+                        <i class="fas fa-arrow-left"></i> Atrás
+                    </a>
+                </div>
+                <div class="col-12 text-center mt-3">
+                    <h3 class="titulo">Comentarios del Producto</h3>
+                </div>
+            </div>
+            <div class="card border-light shadow-sm">
+                <div class="card-body">
+                    <div th:if="${#lists.isEmpty(producto.opiniones)}" class="text-center text-muted mb-3">
+                        <p>Aún no hay comentarios para este producto.</p>
+                    </div>
+                    <div th:each="opinion : ${producto.opiniones}" class="mb-4 border-bottom pb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="text-warning mb-0">
+                                <span class="fs-5">&#9733;</span> 
+                                <span th:text="${opinion.calificacion}">5</span>/5
+                            </h6>
+                            <div>
+                                <small class="text-muted fs-6 fw-bold">Fecha del comentario:</small>
+                                <small class="text-muted fs-6" th:text="${#dates.format(opinion.fecha, 'dd/MM/yyyy')}">Fecha</small>
+                            </div>
+                            <button class="btn btn-danger btn-sm ms-3" 
+                                    th:attr="onclick='mostrarModalConfirmacion(' + ${opinion.idOpinion} + ')'" 
+                                    type="button">
+                                    Eliminar
+                            </button>
+
+                        </div>
+                        <p class="mt-2 mb-1 fs-5" th:text="${opinion.comentario}">Comentario del usuario.</p>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <a th:href="@{/miZonaComentarioNuevo/{idProducto}(idProducto=${producto.idProducto})}" class="btn btn-success fs-5">
+                        Añadir Comentario
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="confirmacionModal" tabindex="-1" aria-labelledby="confirmacionModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmacionModalLabel">Confirmar Eliminación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar este comentario?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="btnConfirmarEliminar">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="mensajeModal" tabindex="-1" aria-labelledby="mensajeModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="mensajeModalLabel">Mensaje</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="mensajeModalTexto">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="botonFinal" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    </main>
+    <footer th:replace="base::footer"></footer>
+    <script>
+        let comentarioAEliminar = null; 
+
+        function mostrarModalConfirmacion(idComentario) {
+            comentarioAEliminar = idComentario; // Guardar el ID del comentario
+            const confirmacionModal = new bootstrap.Modal(document.getElementById('confirmacionModal'));
+            confirmacionModal.show();
+        }
+
+        document.getElementById('btnConfirmarEliminar').addEventListener('click', () => {
+            if (comentarioAEliminar) {
+                fetch(`/miZonaEliminarComentario/${comentarioAEliminar}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Guardar estado de éxito antes de recargar
+                        sessionStorage.setItem('comentarioEliminado', 'true');
+                        location.reload();  // Recargar la página
+                    } else {
+                        return response.text().then(errorMessage => {
+                            mostrarMensajeModal(errorMessage || 'Error desconocido al eliminar el comentario.', 'danger');
+                        });
+                    }
+                })
+                .catch(error => {
+                    mostrarMensajeModal('Error de conexión con el servidor.', 'danger');
+                    console.error('Error:', error);
+                });
+            }
+        });
+
+        // Cuando la página se recarga, verificamos si se debe mostrar el modal de éxito
+        window.addEventListener('load', function() {
+            if (sessionStorage.getItem('comentarioEliminado') === 'true') {
+                mostrarMensajeModal('Comentario eliminado con éxito.', 'success');
+                // Limpiar el estado para evitar que se muestre en futuras recargas
+                sessionStorage.removeItem('comentarioEliminado');
+            }
+        });
+
+        function mostrarMensajeModal(mensaje, tipo) {
+            const mensajeModalTexto = document.getElementById('mensajeModalTexto');
+            const mensajeModalLabel = document.getElementById('mensajeModalLabel');
+
+            mensajeModalTexto.textContent = mensaje;
+            if (tipo === 'success') {
+                mensajeModalLabel.textContent = 'Éxito';
+                mensajeModalLabel.className = 'modal-title text-success';
+            } else if (tipo === 'danger') {
+                mensajeModalLabel.textContent = 'Error';
+                mensajeModalLabel.className = 'modal-title text-danger';
+            }
+
+            const mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
+            mensajeModal.show();
+        }
+
+
+    </script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

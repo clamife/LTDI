@@ -11,8 +11,8 @@ public class Foto {
     private Long idFoto;
 
     @ManyToOne
-    @JoinColumn(name = "id_producto", nullable = false) // Relación con Producto
-    private Producto producto;  // Relación con la tabla Producto
+    @JoinColumn(name = "id_producto", nullable = false) 
+    private Producto producto;
 
     private String urlFoto;
 

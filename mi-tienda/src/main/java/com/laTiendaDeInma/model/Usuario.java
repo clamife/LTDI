@@ -2,6 +2,7 @@ package com.laTiendaDeInma.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
@@ -23,6 +24,9 @@ public class Usuario {
 
     @Column(name = "es_admin")
     private Boolean esAdmin = false;
+    
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<Opinion> opiniones; 
 
     // Getters y Setters
     public Long getIdUsuario() {
