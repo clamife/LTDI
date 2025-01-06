@@ -11,10 +11,12 @@ import com.laTiendaDeInma.repository.DetallePedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Comparator;
+import java.util.stream.Collectors;
+
 
 @Service
 public class usuarioService {
@@ -72,10 +74,10 @@ public class usuarioService {
     // Método para modificar un usuario
     public Usuario modificarUsuario(Long id, Usuario usuarioNuevo) {
         if (usuarioRepository.existsById(id)) {
-            usuarioNuevo.setIdUsuario(id); // Asegura que el usuario nuevo tiene el mismo ID
+            usuarioNuevo.setIdUsuario(id); 
             return usuarioRepository.save(usuarioNuevo);
         } else {
-            return null; // Retorna null si no se encuentra el usuario
+            return null;
         }
     }
     public Usuario buscarPorNombreYContraseña(String nombre, String contraseña) {
@@ -108,16 +110,14 @@ public class usuarioService {
             return false;
         }
     }
-     public List<Producto> obtenerProductosComprados(Long idUsuario) {
-        List<Pedido> pedidos = pedidoRepository.findByUsuario_IdUsuario(idUsuario);
-        List<Producto> productosComprados = new ArrayList<>();
-        for (Pedido pedido : pedidos) {
-            List<DetallePedido> detalles = detallePedidoRepository.findByPedido_IdPedido(pedido.getIdPedido());
-            for (DetallePedido detalle : detalles) {
-                productosComprados.add(detalle.getProducto());
-            }
-        }
-        return productosComprados;
+    public List<Producto> obtenerProductosComprados(Long idUsuario) {
+        return pedidoRepository.findByUsuario_IdUsuario(idUsuario).stream()
+            .sorted(Comparator.comparing(Pedido::getFechaPedido).reversed()) 
+            .flatMap(pedido -> detallePedidoRepository.findByPedido_IdPedido(pedido.getIdPedido()).stream())
+            .map(DetallePedido::getProducto)
+            .distinct()
+            .collect(Collectors.toList());
     }
+    
 }
 

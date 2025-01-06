@@ -1,5 +1,4 @@
 function validateRegister(event) {
-    // Reseteo de errores previos y clases
     document.getElementById("usernameError").style.display = "none";
     document.getElementById("emailError").style.display = "none";
     document.getElementById("passwordError").style.display = "none";
@@ -17,7 +16,6 @@ function validateRegister(event) {
     let direccion = document.getElementById("direccion");
     let telefono = document.getElementById("telefono");
 
-    // Reseteo las clases de validación
     username.classList.remove("is-invalid");
     email.classList.remove("is-invalid");
     password.classList.remove("is-invalid");
@@ -26,7 +24,6 @@ function validateRegister(event) {
     direccion.classList.remove("is-invalid");
     telefono.classList.remove("is-invalid");
 
-    // Validación de los campos
     if (apellido.value.trim().length < 3) {
         document.getElementById("apellidoError").textContent = "El apellido debe tener al menos 3 caracteres.";
         document.getElementById("apellidoError").style.display = "block";
@@ -99,5 +96,5 @@ function validateRegister(event) {
         isValid = false;
     }
 
-    return isValid;  // Si isValid es true, el formulario se enviará
+    return isValid;  
 }

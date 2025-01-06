@@ -28,13 +28,12 @@
         document.getElementById("userName").textContent = usuario.nombre;
         var dropdown = document.getElementById("accountDropdown");
         dropdown.innerHTML = `
-          <li><a class="dropdown-item" href="/miZona"><i class="fas fa-cogs"></i> Mi Zona</a></li>
+          <li><a class="dropdown-item" href="/miZona/${usuario.idUsuario}"><i class="fas fa-cogs"></i> Mi Zona</a></li>
           <li><a class="dropdown-item" href="/logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
           
         `;
       } 
       else {
-        // Si no hay usuario en la sesión, mostramos las opciones de Iniciar sesión y Registrarse
         var dropdown = document.getElementById("accountDropdown");
         dropdown.innerHTML = `
           <li><a class="dropdown-item" href="/login"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</a></li>
@@ -48,9 +47,7 @@
 });
 
 
-
-    // Función para cerrar sesión
     function logout() {
       fetch("/logout", { method: 'POST' })
-        .then(response => window.location.href = "/");  // Redirige a la página principal o login
+        .then(response => window.location.href = "/");  
     }

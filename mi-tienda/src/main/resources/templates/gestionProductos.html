@@ -11,7 +11,6 @@
             <div class="col-8 text-center">
                 <h2 class="mb-0" style="color: #5b7668;">Gestión de Productos</h2>
             </div>
-            <!-- Columna para los botones alineados a la derecha -->
             <div class="col-2 d-flex justify-content-end align-items-center">
                 <a href="/nuevo" class="btn btn-success btn-lg me-2">Añadir Producto</a>
                 <a href="/gestionCategorias" class="btn btn-success btn-lg">Gestionar Categorías</a>
@@ -27,7 +26,8 @@
                     <th>Precio</th>
                     <th>Nombre Categoría</th>
                     <th>Fotos</th>
-                    <th>Acciones</th> <!-- Columna para las acciones como borrar -->
+                    <th>Recursos</th> 
+                    <th>Acciones</th> 
                 </tr>
             </thead>
             <tbody>
@@ -38,14 +38,11 @@
                     <td th:text="${producto.precio} + ' €'"></td>
                     <td th:text="${producto.categoria.nombreCategoria}"></td> 
                     <td>
-                        <!-- Botón para ver fotos (verde oscuro) -->
-                        <button type="button" class="btn" style="background-color: #28a745; color: white;" 
+                        <button type="button" class="btn" style="background-color: #198754; color: white;" 
                                 data-bs-toggle="modal" 
                                 th:data-bs-target="'#fotoModal' + ${producto.idProducto}">
                             Ver fotos
                         </button>
-                
-                        <!-- Modal único para cada producto -->
                         <div class="modal fade" th:id="'fotoModal' + ${producto.idProducto}" tabindex="-1" 
                              aria-labelledby="'fotoModalLabel' + ${producto.idProducto}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
@@ -55,11 +52,10 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <!-- Fotos del producto en fila -->
                                         <div class="d-flex flex-wrap">
                                             <div th:each="foto : ${producto.fotos}" class="m-2">
                                                 <img th:src="${foto.urlFoto}" alt="Foto del producto" 
-                                                     class="img-fluid" style="max-width: 150px; max-height: 150px;">
+                                                     class="img-fluid lazy-image" style="max-width: 150px; max-height: 150px;">
                                             </div>
                                         </div>
                                     </div>
@@ -67,6 +63,14 @@
                             </div>
                         </div>
                     </td>
+                    <td class="text-center">
+                        <div class="d-flex flex-column gap-2 align-items-center">
+                           <a th:href="@{/gestionRecursos/{idProducto}(idProducto=${producto.idProducto})}"
+                              class="btn btn-success btn-sm text-white shadow-sm px-3 w-100">
+                              Gestionar Recursos
+                           </a>
+                        </div>
+                     </td>
                     <td class="text-center">
                         <div class="d-flex flex-column gap-2 align-items-center">
                            <a th:href="@{/editarProducto/{id}(id=${producto.idProducto})}"
@@ -90,39 +94,44 @@
     <footer th:replace="baseAdmin::footer"></footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+    document.addEventListener('show.bs.modal', function (event) {
+        const modal = event.target; 
+        const images = modal.querySelectorAll('img.lazy-image');
 
-function openLightbox() {
-        // Abre la ventana emergente con la imagen ampliada
-        document.getElementById("lightbox").style.display = "block";
-        document.getElementById("lightboxImage").src = document.getElementById("mainImage").src;
-    }
+        images.forEach(img => {
+            if (!img.src) { 
+                img.src = img.getAttribute('data-src');
+            }
+        });
+    });
 
-    function closeLightbox() {
-        // Cierra la ventana emergente
-        document.getElementById("lightbox").style.display = "none";
-    }
-
-    function deleteProducto(idProducto) {
-        // Lógica para confirmar y eliminar el producto, por ejemplo:
-        if (confirm("¿Estás seguro de que quieres eliminar este producto?")) {
-            // Aquí puedes hacer una solicitud para eliminar el producto, como una petición AJAX.
-            // Asegúrate de que el backend tenga un endpoint para manejar la eliminación del producto.
-            fetch('/eliminar/' + idProducto, { method: 'DELETE' })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Producto eliminado');
-                        location.reload();  // Recargar la página para actualizar la lista de productos
-                    } else {
-                        alert('Error al eliminar el producto');
-                        location.reload();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error al eliminar el productofsdgsdg');
-                });
+    function openLightbox() {
+            document.getElementById("lightbox").style.display = "block";
+            document.getElementById("lightboxImage").src = document.getElementById("mainImage").src;
         }
-    }
+
+        function closeLightbox() {
+            document.getElementById("lightbox").style.display = "none";
+        }
+
+        function deleteProducto(idProducto) {
+            if (confirm("¿Estás seguro de que quieres eliminar este producto?")) {
+                fetch('/eliminar/' + idProducto, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Producto eliminado');
+                            location.reload();  
+                        } else {
+                            alert('Error al eliminar el producto');
+                            location.reload();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error al eliminar el productofsdgsdg');
+                    });
+            }
+        }
     </script>
 </body>
 </html>

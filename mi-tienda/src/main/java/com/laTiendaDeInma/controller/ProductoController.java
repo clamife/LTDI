@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -109,6 +110,7 @@ public class ProductoController {
             List<Foto> fotos = fotoService.obtenerFotosPorProducto(id);  
             model.addAttribute("fotos", fotos);
             List<Opinion> opiniones = opinionService.obtenerOpinionesPorProducto(id);
+            Collections.reverse(opiniones); 
             model.addAttribute("opiniones", opiniones);
             return "detalleProducto"; 
         }

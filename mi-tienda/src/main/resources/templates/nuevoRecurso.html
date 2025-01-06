@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="baseAdmin::head">
+</head>
+<body>
+    <nav th:replace="baseAdmin::nav"></nav>
+      <main class="container my-5">
+          <div class="row justify-content-center">
+            <div class="col-md-8">
+              <div class="row mb-4">
+                <div class="col-2">
+                    <a th:href="/gestionRecursos/{idProducto}(idProducto=${idProducto})" class="btn btn-lg" style="background-color: #7FB77E; color: white; font-size: 1.2rem; width: 100px;">Atrás</a>
+                    <div th:if="${error}" class="alert alert-danger">
+                        <p th:text="${error}"></p>
+                      </div>
+                </div>
+                <div th:if="${error}" class="alert alert-danger">
+                    <p th:text="${error}"></p>
+                  </div>
+                <div class="col-8 text-center">
+                    <h2 class="mb-0" style="color: #5b7668;">Agregar Recurso</h2>
+                </div>
+              </div>
+              <div class="card shadow-lg border-0 rounded-3 p-5" style="background-color: #f4f7f6;">
+                
+                <form id="productForm" onsubmit="return validateProductForm(event)" method="post"  th:action="@{/nuevoRecurso/{idProducto}(idProducto=${idProducto})}" th:object="${recurso}">
+                  <div class="mb-4">
+                    <label for="productName" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Nombre del Recurso</label>
+                    <input type="text" class="form-control" id="productName" th:field="*{nombreRecurso}" placeholder="Introduce el nombre del recurso">
+                    <div id="productNameError" class="invalid-feedback" style="display:none;"></div>
+                  </div>
+                  <div class="mb-4">
+                    <label for="tipoRecurso" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Tipo de Recurso</label>
+                    <select class="form-control" id="tipoRecurso" th:field="*{tipoRecurso}">
+                      <option value="">Selecciona un recurso</option>
+                      <option value="PDF">PDF</option>
+                      <option value="video">video</option>
+                      <option value="imagen">imagen</option>
+                    </select>
+                    <div id="tipoRecursoError" class="invalid-feedback" style="display:none;"></div>
+                  </div>
+                  <div class="mb-4">
+                      <label for="rutaRecurso" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Ruta de Recurso</label>
+                      <input type="text" class="form-control" id="rutaRecurso" th:field="*{rutaRecurso}" placeholder="Introduce la ruta del recurso">
+                      <div id="rutaRecursoError" class="invalid-feedback" style="display:none;"></div>
+                  </div>
+                  <button type="submit" class="btn" style="background-color: #7FB77E; color: white; width: 100%; font-size: 1.1rem;">Agregar Recurso</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </main>
+    <footer th:replace="baseAdmin::footer"></footer>
+    <script src="/js/nuevoRecurso.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+  
+</html>

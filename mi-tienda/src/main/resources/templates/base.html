@@ -3,7 +3,6 @@
 <head th:replace="index::head">
 </head>
 <body>
-  <!-- Barra de navegación -->
   <nav th:replace="index::div"></nav>
   <header>
     <div class="intro-text-container text-center py-5">
@@ -16,11 +15,9 @@
     </div>
   </header>
   
-  <!-- Carruseles ajustados -->
   <main class="container my-5">
     <div class="row g-0 mb-5">
       <div class="col-6 p-0 position-relative">
-        <!-- Título del primer carrusel con fondo blanco y centrado encima -->
         <h3 class="carousel-title text-center" style="background-color: rgba(255, 255, 255, 0.9); position: absolute; top: -50px; left: 50%; transform: translateX(-50%); padding: 10px 20px; color: #3a4e38; font-size: 1.5rem;">Productos de Crochet</h3>
         <div id="carouselExampleCaptions1" class="carousel slide w-100" data-bs-ride="carousel" style="position: relative;">
           <div class="carousel-inner" style="height: 350px;">
@@ -57,7 +54,6 @@
       </div>
   
       <div class="col-6 p-0 position-relative">
-        <!-- Título del segundo carrusel con fondo blanco y centrado encima -->
         <h3 class="carousel-title text-center" style="background-color: rgba(255, 255, 255, 0.9); position: absolute; top: -50px; left: 50%; transform: translateX(-50%); padding: 10px 20px; color: #3a4e38; font-size: 1.5rem;">Producto de Macramé</h3>
         <div id="carouselExampleCaptions2" class="carousel slide w-100" data-bs-ride="carousel" style="position: relative;">
           <div class="carousel-inner" style="height: 350px;">
@@ -94,12 +90,11 @@
       </div>
     </div>
   
-    <!-- Espacio para los kits DIY -->
     <div class="intro-text-container text-center py-5">
       <h2 class="intro-titulo" style="background-color: rgba(255, 255, 255, 0.9); display: inline-block; padding: 20px 30px; color: #3a4e38; font-size: 2rem;">¿Quieres hacerlo tú misma?</h2>
       <div class="intro-texto" style="background-color: rgba(255, 255, 255, 0.9); padding: 20px 30px; color: #3a4e38; font-size: 1.3rem;">
         <p>Descubre nuestros kits DIY y empieza a coser con nosotras. ¡Todo lo que necesitas para empezar tu propio proyecto de crochet y macramé!</p>
-        <a href="/kits" class="btn btn-success btn-lg" style="font-size: 1.5rem;">Descúbrelos aquí</a>
+        <a href="/productos/22" class="btn btn-success btn-lg" style="font-size: 1.5rem;">Descúbrelos aquí</a>
       </div>//TODO modificar la ruta cuando añada mas articulos 
     </div>
   </main>

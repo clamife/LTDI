@@ -97,15 +97,6 @@ public class TiendaController {
         model.addAttribute("categoria", categoria);
         return "gestionCategorias";
     }
-    
-    
-
-    @GetMapping("/nuevaCategoria")
-    public String nuevaCategoria(Model model) {
-        model.addAttribute("categoria", new Categoria());
-        return "nuevaCategoria";
-    }
-
-    
+   
 
 }

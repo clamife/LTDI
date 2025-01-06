@@ -31,8 +31,11 @@ public class Producto {
     @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
     private List<Foto> fotos; 
 
-     @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
     private List<Opinion> opiniones; 
+
+    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
+    private List<Recurso> recursos; 
 
     @Column(name = "activo")
     private Boolean activo;
@@ -44,6 +47,14 @@ public class Producto {
 
     public void setOpiniones(List<Opinion> opiniones){
         this.opiniones= opiniones;
+    }
+
+    public List<Recurso> getRecursos(){
+        return recursos;
+    }
+
+    public void setRecursos(List<Recurso> recursos){
+        this.recursos= recursos;
     }
 
     public Long getIdProducto() {
