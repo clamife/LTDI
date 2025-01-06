@@ -25,13 +25,11 @@
               </div>
               <label for="nombre" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Modifica aquí el nombre del producto</label>
               <input type="text" class="form-control" id="nombre" th:field="*{nombreProducto}" placeholder="Introduce el nuevo nombre del producto">
-              <div id="nameError" class="text-danger small mt-1"></div> <!-- Aquí se mostrará el error -->
+              <div id="nameError" class="text-danger small mt-1"></div> 
             </div>
             
-            <!-- Categoría del producto -->
             <div class="mb-4">
               
-              <!-- Categoría Original -->
               <div class="mb-2">
                 <span class="text-muted" style="font-size: 1rem;">Categoría actual del producto: </span>
                 <span class="font-weight-bold" style="font-size: 1rem;" th:text="${producto.categoria.nombreCategoria}">Categoría Actual</span>
@@ -51,7 +49,7 @@
               </div>
               <label for="descripcion" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Modifica aquí la descripción del producto</label>
               <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="3" placeholder="Introduce una nueva descripción"></textarea>
-              <div id="descriptionError" class="text-danger small mt-1"></div> <!-- Aquí se mostrará el error -->
+              <div id="descriptionError" class="text-danger small mt-1"></div>
             </div>
           
             <div class="mb-4">
@@ -61,10 +59,9 @@
               </div>
               <label for="precio" class="form-label" style="color: #5b7668; font-size: 1.1rem;">Modifica aquí el precio del producto (€)</label>
               <input type="number" class="form-control" id="precio" th:field="*{precio}" placeholder="Introduce el precio del producto" >
-              <div id="priceError" class="text-danger small mt-1"></div> <!-- Aquí se mostrará el error -->
+              <div id="priceError" class="text-danger small mt-1"></div> 
             </div>
           
-            <!-- URL de la Foto -->
             <div class="mb-4">
               <label for="photoUrl" class="form-label" style="color: #5b7668; font-size: 1.1rem;">URL de la Foto</label>
               <input type="url" class="form-control" id="photoUrl" placeholder="Introduce la URL de la foto del producto">
@@ -74,14 +71,12 @@
               <div id="currentUrlsList" class="mb-4">
                 <label class="form-label" style="color: #5b7668; font-size: 1.1rem;">URLs actuales de las fotos del producto</label>
                 <ul id="currentPhotoUrls" class="list-unstyled" style="padding-left: 0;">
-                  <!-- Se llenará con las URLs actuales desde el servidor -->
                   <li th:each="foto : ${producto.fotos}" class="d-flex justify-content-between align-items-center">
                     <span th:text="@{${foto.urlFoto}}"></span>
                   </li>
                 </ul>
               </div>
               
-              <!-- Lista de URLs modificadas -->
               <div id="modifiedUrlsList" class="mb-4">
                 <label class="form-label" style="color: #5b7668; font-size: 1.1rem;">URLs modificadas de las fotos del producto</label>
                 <ul id="photoUrlsMod" class="list-unstyled" style="padding-left: 0;">
@@ -105,21 +100,17 @@
 document.getElementById("productForm").addEventListener("submit", validateProductForm);
 let photoUrls = [];
 function validateProductForm(event) {
-  // Prevenir el envío del formulario si hay errores
   event.preventDefault();
 
-  // Obtener los campos
   const nombre = document.getElementById("nombre");
   const descripcion = document.getElementById("descripcion");
   const precio = document.getElementById("precio");
 
-  // Obtener los elementos de error
   const nameError = document.getElementById("nameError");
   const descriptionError = document.getElementById("descriptionError");
   const priceError = document.getElementById("priceError");
   const urlModError = document.getElementById("photoModError");
 
-  // Resetear los mensajes de error
   nameError.textContent = "";
   descriptionError.textContent = "";
   priceError.textContent = "";
@@ -127,7 +118,6 @@ function validateProductForm(event) {
 
   let isValid = true;
 
-  // Validar el nombre
   if (nombre.value.trim() === "") {
     nameError.textContent = "El nombre no puede estar vacío.";
     isValid = false;
@@ -136,7 +126,6 @@ function validateProductForm(event) {
     isValid = false;
   }
 
-  // Validar la descripción
   if (descripcion.value.trim() === "") {
     descriptionError.textContent = "La descripción no puede estar vacía.";
     isValid = false;
@@ -145,7 +134,6 @@ function validateProductForm(event) {
     isValid = false;
   }
 
-  // Validar el precio
   if (precio.value.trim() === "") {
     priceError.textContent = "El precio no puede estar vacío.";
     isValid = false;
@@ -153,7 +141,7 @@ function validateProductForm(event) {
     priceError.textContent = "El precio debe ser mayor que 0.";
     isValid = false;
   }
-    const photoUrls = getPhotoUrlsMod(); // Recoge las URLs
+    const photoUrls = getPhotoUrlsMod(); 
     const jsonData = JSON.stringify({ photoUrls }); 
 
   if (photoUrls.length === 0) {
@@ -168,13 +156,11 @@ function validateProductForm(event) {
 }
 
 
-// Función para validar y agregar una URL
 function addPhotoUrl() {
   const photoUrlInput = document.getElementById("photoUrl");
   const photoUrlsList = document.getElementById("photoUrlsMod");
   const errorContainer = document.getElementById("photoUrlError");
 
-  // Validar que la URL no esté vacía
   if (photoUrlInput.value.trim() === "") {
     errorContainer.textContent = "La URL de la foto es obligatoria.";
     errorContainer.style.display = "block";
@@ -182,7 +168,6 @@ function addPhotoUrl() {
     return;
   } 
 
-  // Validar la longitud de la URL
   else if (photoUrlInput.value.length < 10 || photoUrlInput.value.length > 100) {
     errorContainer.textContent = "La URL debe tener entre 10 y 100 caracteres.";
     errorContainer.style.display = "block";
@@ -190,14 +175,11 @@ function addPhotoUrl() {
     return;
   }
 
-  // Esconder el error si la URL es válida
   errorContainer.style.display = "none";
   photoUrlInput.classList.remove("is-invalid");
 
-  // Obtener la URL ingresada
   const newUrl = photoUrlInput.value.trim();
 
-  // Verificar si la URL ya está en el array
   if (photoUrls.includes(newUrl)) {
     errorContainer.textContent = "Esta URL ya ha sido agregada.";
     errorContainer.style.display = "block";
@@ -206,7 +188,6 @@ function addPhotoUrl() {
 
  
 
-  // Crear un nuevo item de lista
   const listItem = document.createElement("li");
   listItem.classList.add("d-flex", "justify-content-between", "align-items-center");
   listItem.innerHTML = `
@@ -215,23 +196,18 @@ function addPhotoUrl() {
   `;
   photoUrlsList.appendChild(listItem);
 
-  // Limpiar el campo de entrada
   photoUrlInput.value = "";
 }
 
-// Función para eliminar una URL
 function removePhotoUrl(button) {
   const listItem = button.closest("li");
   const urlToRemove = listItem.querySelector("span").textContent;
 
-  // Eliminar la URL del array
   photoUrls = photoUrls.filter(url => url !== urlToRemove);
   console.log("URLs cargadas al borrar:", photoUrls);
 
-  // Eliminar el item de la lista
   listItem.remove();
 }
-//Obtener urls Modificadas
 function getPhotoUrlsMod() {
   const listItems = document.querySelectorAll('#photoUrlsMod li span');
 

@@ -7,7 +7,7 @@
   <main class="container mt-5">
     <div class="row mb-4">
         <div class="col-12">
-            <a href="/miZona" class="btn btn-success btn-lg">
+            <a th:href="@{/miZona/{idUsuario}(idUsuario=${session.usuario.idUsuario})}"  class="btn btn-success btn-lg">
                 <i class="fas fa-arrow-left"></i> Atrás
             </a>
         </div>

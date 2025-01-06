@@ -15,10 +15,7 @@ public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
-    @Autowired
-    private DetallePedidoService detallePedidoService;
 
-    // Crear un nuevo pedido con los detalles
     public Pedido crearPedido(Pedido pedido, List<DetallePedido> detalles) {
         pedido.setFechaPedido(LocalDate.now());
         pedido.setEstado("pendiente");
@@ -33,7 +30,6 @@ public class PedidoService {
         return pedidoRepository.save(pedido);
     }
 
-    // Confirmar el pedido
     public Pedido confirmarPedido(Long idPedido) {
         Pedido pedido = pedidoRepository.findById(idPedido)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));
@@ -43,12 +39,10 @@ public class PedidoService {
         return pedidoRepository.save(pedido);
     }
 
-    // Obtener todos los pedidos
     public List<Pedido> obtenerTodos() {
         return pedidoRepository.findAll();
     }
 
-    // Obtener un pedido por ID
     public Pedido obtenerPorId(Long idPedido) {
         return pedidoRepository.findById(idPedido)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado"));

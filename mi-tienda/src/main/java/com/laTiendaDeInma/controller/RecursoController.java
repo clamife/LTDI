@@ -1,6 +1,5 @@
 package com.laTiendaDeInma.controller;
 
-import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,15 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.stereotype.Controller;
 import com.laTiendaDeInma.model.Categoria;
 import com.laTiendaDeInma.model.Producto;
-import com.laTiendaDeInma.model.Pedido;
 import com.laTiendaDeInma.model.Recurso;
-import com.laTiendaDeInma.model.Usuario;
 import com.laTiendaDeInma.service.CategoriaService;
-import com.laTiendaDeInma.service.DetallePedidoService;
-import com.laTiendaDeInma.service.PedidoService;
 import com.laTiendaDeInma.service.ProductoService;
 import com.laTiendaDeInma.service.RecursoService;
-import com.laTiendaDeInma.service.usuarioService;
 
 import jakarta.validation.Valid;
 

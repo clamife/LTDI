@@ -13,39 +13,31 @@
       <p class="intro-texto">Gestiona tu perfil, pedidos y más desde aquí.</p>
     </div>
   </header>
-    <div class="row mb-4">
-      <div class="col-lg-4 mb-4">
+  <div class="row d-flex justify-content-center">
+    <div class="col-lg-4 mb-4">
         <div class="card border-light shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title fs-4">Modificar mi Usuario</h5>
-            <p class="card-text text-muted fs-5">Actualiza tu información personal y preferencias de cuenta.</p>
-            <a th:href="@{/miZonaEditarUsuario/{idUsuario}(idUsuario=${session.usuario.idUsuario})}" class="btn btn-success fs-5"><i class="bi bi-box"></i> Editar perfil</a>
-          </div>
+            <div class="card-body">
+                <h5 class="card-title fs-4">Pedidos Realizados</h5>
+                <p class="card-text text-muted fs-5">Consulta el historial de tus compras y el estado de tus pedidos.</p>
+                <a th:href="@{/miZonaPedidos/{idUsuario}(idUsuario=${session.usuario.idUsuario})}" class="btn btn-success fs-5">
+                    <i class="bi bi-box"></i> Ver mis pedidos
+                </a>
+            </div>
         </div>
-      </div>
-
-      <div class="col-lg-4 mb-4">
-        <div class="card border-light shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title fs-4">Pedidos Realizados</h5>
-            <p class="card-text text-muted fs-5">Consulta el historial de tus compras y el estado de tus pedidos.</p>
-            <a th:href="@{/miZonaPedidos/{idUsuario}(idUsuario=${session.usuario.idUsuario})}" class="btn btn-success fs-5">
-              <i class="bi bi-box"></i> Ver mis pedidos
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 mb-4">
-        <div class="card border-light shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title fs-4">Deja tu Comentario</h5>
-            <p class="card-text text-muted fs-5">Comparte tu opinión sobre los productos que has comprado.</p>
-            <a th:href="@{/miZonaproductosComprados/{idUsuario}(idUsuario=${session.usuario.idUsuario})}" class="btn btn-success fs-5"><i class="bi bi-box"></i> Dejar un comentario</a>
-          </div>
-        </div>
-      </div>
     </div>
+
+    <div class="col-lg-4 mb-4">
+        <div class="card border-light shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title fs-4">Deja tu Comentario</h5>
+                <p class="card-text text-muted fs-5">Comparte tu opinión sobre los productos que has comprado.</p>
+                <a th:href="@{/miZonaproductosComprados/{idUsuario}(idUsuario=${session.usuario.idUsuario})}" class="btn btn-success fs-5">
+                    <i class="bi bi-box"></i> Dejar un comentario
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
     <div class="row">
       <div class="col-lg-12 mb-4">

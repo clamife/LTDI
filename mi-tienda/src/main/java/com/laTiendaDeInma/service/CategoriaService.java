@@ -14,23 +14,18 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-
-    // Método para obtener todas las categorías
     public List<Categoria> obtenerTodas() {
         return categoriaRepository.findAll();
     }
 
-    // Método para obtener una categoría por su ID
     public Optional<Categoria> obtenerCategoriaPorId(Long id) {
         return categoriaRepository.findById(id);
     }
 
-    // Método para buscar categorías por nombre
     public List<Categoria> buscarCategoriaPorNombre(String nombreCategoria) {
         return categoriaRepository.findByNombreCategoriaContaining(nombreCategoria);
     }
 
-    // Método para guardar o actualizar una categoría
     public Categoria guardarOActualizarCategoria(Categoria categoria) {
         return categoriaRepository.save(categoria);
     }
@@ -39,8 +34,6 @@ public class CategoriaService {
         return categoriaRepository.existsByNombreCategoria(nombreCategoria);
     }
    
-
-    // Método para eliminar una categoría por su ID
     public void eliminarCategoriaPorId(Long id) {
         if (categoriaRepository.existsById(id)) {
             categoriaRepository.deleteById(id);
@@ -49,8 +42,6 @@ public class CategoriaService {
         }
     }
     
-
-    // Método para contar el número de categorías en la base de datos
     public long contarCategorias() {
         return categoriaRepository.count();
     }

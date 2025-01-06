@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -80,46 +78,45 @@ public class PedidoController {
             double total = pedido.getDetalles().stream()
             .mapToDouble(detalle -> detalle.getPrecioUnitario() * detalle.getCantidad())
             .sum();
-            pedido.setTotal(total); // Actualizamos el total del pedido
+            pedido.setTotal(total); 
             session.setAttribute("pedido", pedido);
             }
 
         return "redirect:/carrito"; 
     }
-    @DeleteMapping("/eliminarDetalle/{nombreProducto}")
-    public ResponseEntity<String> eliminarDetalle(@PathVariable String nombreProducto, HttpSession session, Model model) {
-        // Obtener el pedido de la sesión
-        List<Categoria> categorias = categoriaService.obtenerTodas();
-        model.addAttribute("categorias", categorias);
-        Pedido pedido = (Pedido) session.getAttribute("pedido");
-        if (pedido != null && pedido.getDetalles() != null) {
-            DetallePedido detalleAEliminar = pedido.getDetalles().stream()
-                .filter(d -> d.getProducto().getNombreProducto().equals(nombreProducto)) 
-                .findFirst()
-                .orElse(null);
-    
-            if (detalleAEliminar != null) {
-                if (detalleAEliminar.getCantidad() > 1) {
-                    detalleAEliminar.setCantidad(detalleAEliminar.getCantidad() - 1);
-                } else {
-                    pedido.getDetalles().remove(detalleAEliminar);
-                }
-    
-                double total = pedido.getDetalles().stream()
-                    .mapToDouble(detalle -> detalle.getPrecioUnitario() * detalle.getCantidad())
-                    .sum();
-                pedido.setTotal(total); 
-                session.setAttribute("pedido", pedido);
+    @DeleteMapping("/eliminarDetalle/{idProducto}")
+public ResponseEntity<String> eliminarDetalle(@PathVariable Long idProducto, HttpSession session, Model model) {
+    List<Categoria> categorias = categoriaService.obtenerTodas();
+    model.addAttribute("categorias", categorias);
+    Pedido pedido = (Pedido) session.getAttribute("pedido");
+    if (pedido != null && pedido.getDetalles() != null) {
+        DetallePedido detalleAEliminar = pedido.getDetalles().stream()
+            .filter(d -> d.getProducto().getIdProducto().equals(idProducto)) 
+            .findFirst()
+            .orElse(null);
 
-                return ResponseEntity.ok("Producto eliminado del carrito");
+        if (detalleAEliminar != null) {
+            if (detalleAEliminar.getCantidad() > 1) {
+                detalleAEliminar.setCantidad(detalleAEliminar.getCantidad() - 1);
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado en el carrito");
+                pedido.getDetalles().remove(detalleAEliminar);
             }
+
+            double total = pedido.getDetalles().stream()
+                .mapToDouble(detalle -> detalle.getPrecioUnitario() * detalle.getCantidad())
+                .sum();
+            pedido.setTotal(total); 
+            session.setAttribute("pedido", pedido);
+
+            return ResponseEntity.ok("Producto eliminado del carrito");
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No hay pedido en la sesión");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado en el carrito");
         }
-    
+    } else {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No hay pedido en la sesión");
     }
+}
+
     
 
 

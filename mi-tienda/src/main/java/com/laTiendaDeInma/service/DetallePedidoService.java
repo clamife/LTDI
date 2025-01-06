@@ -13,12 +13,10 @@ public class DetallePedidoService {
     @Autowired
     private DetallePedidoRepository detallePedidoRepository;
 
-    // Guardar un detalle de pedido
     public DetallePedido guardar(DetallePedido detallePedido) {
         return detallePedidoRepository.save(detallePedido);
     }
 
-    // Obtener todos los detalles de pedidos
     public List<DetallePedido> obtenerTodos() {
         return detallePedidoRepository.findAll();
     }

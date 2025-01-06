@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import java.util.Collections;
 import com.laTiendaDeInma.service.CategoriaService;
-import com.laTiendaDeInma.service.DetallePedidoService;
-import com.laTiendaDeInma.service.PedidoService;
 import com.laTiendaDeInma.service.ProductoService;
 import com.laTiendaDeInma.service.usuarioService;
 
@@ -36,9 +34,13 @@ public class OpinionController {
     private OpinionService opinionService;
     @Autowired
     private ProductoService productoService;
+    @Autowired 
+    private CategoriaService categoriaService;
 
     @GetMapping("/miZonaproductosComprados/{idUsuario}")
     public String productosComprados(@PathVariable long idUsuario, Model model){
+        List<Categoria> categorias = categoriaService.obtenerTodas();
+        model.addAttribute("categorias", categorias);
         List<Producto> productos = usuarioService.obtenerProductosComprados(idUsuario);
         for (Producto producto : productos) {
             List<Foto> fotos = fotoService.obtenerFotosPorProducto(producto.getIdProducto()); 
@@ -49,6 +51,8 @@ public class OpinionController {
     }
     @GetMapping("/miZonaComentarios/{idProducto}/{idUsuario}")
     public String comentarioNuevo(@PathVariable long idProducto,@PathVariable long idUsuario, Model model){
+        List<Categoria> categorias = categoriaService.obtenerTodas();
+        model.addAttribute("categorias", categorias);
         Producto producto = productoService.obtenerProductoPorId(idProducto)
         .orElseThrow(() -> new RuntimeException("Producto no encontrado para el id: " + idProducto));
             List<Foto> fotos = fotoService.obtenerFotosPorProducto(producto.getIdProducto()); 
@@ -61,6 +65,8 @@ public class OpinionController {
     }
     @GetMapping("/miZonaComentarioNuevo/{idProducto}")
     public String comentarioNuevo(@PathVariable long idProducto, Model model){
+        List<Categoria> categorias = categoriaService.obtenerTodas();
+        model.addAttribute("categorias", categorias);
         Producto producto = productoService.obtenerProductoPorId(idProducto)
         .orElseThrow(() -> new RuntimeException("Producto no encontrado para el id: " + idProducto));
         model.addAttribute("producto", producto);
@@ -69,6 +75,8 @@ public class OpinionController {
     }
     @PostMapping("/miZonaComentarios/{idProducto}/{idUsuario}")
     public String intentoComentarioNuevo(@Valid @ModelAttribute Opinion opinion,@PathVariable long idProducto,@PathVariable long idUsuario, Model model){
+        List<Categoria> categorias = categoriaService.obtenerTodas();
+        model.addAttribute("categorias", categorias);
         productoService.agregarOpinion(idProducto, opinion.getComentario(), opinion.getCalificacion(),idUsuario);
         Producto producto = productoService.obtenerProductoPorId(idProducto)
         .orElseThrow(() -> new RuntimeException("Producto no encontrado para el id: " + idProducto));
@@ -81,6 +89,7 @@ public class OpinionController {
     }
     @DeleteMapping("/miZonaEliminarComentario/{idComentario}")
     public ResponseEntity<String> eliminarComentario(@PathVariable Long idComentario) {
+        
         try {
             opinionService.eliminarOpinion(idComentario);
             return ResponseEntity.ok("Comentario eliminado con éxito.");
