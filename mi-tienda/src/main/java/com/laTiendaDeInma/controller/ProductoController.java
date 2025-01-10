@@ -162,6 +162,6 @@ public ResponseEntity<String> eliminarProducto(@PathVariable Long id) {
     public String buscarProductos(@RequestParam("nombre") String nombre, Model model) {
         List<Producto> productos = productoService.buscarProductosPorNombre(nombre);
         model.addAttribute("productos", productos);
-        return "productos/lista";  // Vista que muestra los productos encontrados
+        return "productos/lista"; 
     }
 }

@@ -113,4 +113,10 @@ public class usuarioController {
         Usuario usuario = (Usuario) session.getAttribute("usuario"); // Obtener el usuario desde la sesión
         return usuario != null ? usuario : null;  // Si no hay usuario, devolver null
     }
+    @GetMapping("/gestionUsuarios")
+    public String gestionUsuarios(Model model) {
+        List<Usuario> usuario = usuarioService.obtenerTodosLosUsuarios();
+        model.addAttribute("usuario", usuario);
+        return "gestionUsuarios";
+    }
 }

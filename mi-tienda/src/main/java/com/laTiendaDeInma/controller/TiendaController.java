@@ -31,8 +31,9 @@ public class TiendaController {
     public String base(Model model) {
         List<Categoria> categorias = categoriaService.obtenerTodas();
         model.addAttribute("categorias", categorias);
-        return "base"; // Vista de inicio
+        return "base"; 
     }
+    
 
     @GetMapping("/sobremi")
     public String sobremi(Model model) {
@@ -75,20 +76,5 @@ public class TiendaController {
     public String baseAdmin() {
         return "baseAdmin";
     }
-
-    @GetMapping("/gestionUsuarios")
-    public String gestionUsuarios(Model model) {
-        List<Usuario> usuario = usuarioService.obtenerTodosLosUsuarios();
-        model.addAttribute("usuario", usuario);
-        return "gestionUsuarios";
-    }
-
-    @GetMapping("/gestionCategorias")
-    public String listarCategorias(Model model) {
-        List<Categoria> categoria = categoriaService.obtenerTodas();
-        model.addAttribute("categoria", categoria);
-        return "gestionCategorias";
-    }
-   
 
 }

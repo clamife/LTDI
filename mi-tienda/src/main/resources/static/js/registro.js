@@ -51,8 +51,8 @@ function validateRegister(event) {
         isValid = false;
     }
 
-    if (username.value.trim().length < 6 || username.value.trim().length > 20) {
-        document.getElementById("usernameError").textContent = "El nombre de usuario debe tener entre 6 y 20 caracteres.";
+    if (username.value.trim().length < 3 || username.value.trim().length > 20) {
+        document.getElementById("usernameError").textContent = "El nombre de usuario debe tener entre 3 y 20 caracteres.";
         document.getElementById("usernameError").style.display = "block";
         username.classList.add("is-invalid");
         isValid = false;
@@ -71,17 +71,28 @@ function validateRegister(event) {
         isValid = false;
     }
 
+    let errors = [];
+
     if (password.value.trim() === "") {
-        document.getElementById("passwordError").textContent = "La contraseña es obligatoria.";
-        document.getElementById("passwordError").style.display = "block";
-        password.classList.add("is-invalid");
-        isValid = false;
-    }
+        errors.push("La contraseña es obligatoria.");
+    } 
     if (password.value.trim().length < 6 || password.value.trim().length > 20) {
-        document.getElementById("passwordError").textContent = "La contrañesa debe tener entre 6 y 20 caracteres.";
+        errors.push("La contraseña debe tener entre 6 y 20 caracteres.");
+    }
+    if (!/[A-Z]/.test(password.value)) { 
+        errors.push("La contraseña debe incluir al menos una letra mayúscula.");
+    }
+    if (!/\d/.test(password.value)) { 
+        errors.push("La contraseña debe incluir al menos un número.");
+    }
+    if (errors.length > 0) {
+        document.getElementById("passwordError").innerHTML = errors.join("<br>");
         document.getElementById("passwordError").style.display = "block";
         password.classList.add("is-invalid");
         isValid = false;
+    } else {
+        document.getElementById("passwordError").style.display = "none";
+        password.classList.remove("is-invalid");
     }
 
     if (confirmPassword.value.trim() === "") {
